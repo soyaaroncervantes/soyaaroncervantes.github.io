@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Debug application [ Chrome ]",
+            "url": "http://localhost:5173", // Debe coincidir con server.port en vite.config.ts
+            "webRoot": "${workspaceFolder}",
+            "preLaunchTask": "Start project",
+            "smartStep": true,
+            "skipFiles": [
+                "**/node_modules/**",
+                "<node_internals>/**"
+            ],
+            "sourceMapPathOverrides": {
+                "/@fs/*": "*",
+                "/src/*": "${workspaceFolder}/src/*"
+            }
+        }
+    ]
+}

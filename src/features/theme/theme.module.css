@@ -1,0 +1,9 @@
+.base {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  font-family: Roboto, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

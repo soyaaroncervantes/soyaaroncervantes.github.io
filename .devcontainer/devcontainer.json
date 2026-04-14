@@ -1,0 +1,44 @@
+{
+  "name": "React Template",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/shyim/devcontainers-features/bun:0": {}
+  },
+
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite dev server",
+      "onAutoForward": "openPreview"
+    }
+  },
+
+  "onCreateCommand": "bun install --frozen-lockfile",
+  "updateContentCommand": "bun install --frozen-lockfile",
+  "postCreateCommand": "cp .env.example .env",
+  "postAttachCommand": "bun dev --host",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "vitest.explorer",
+        "ms-vscode.js-debug"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports.biome": "explicit"
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": ["src/core/app.tsx"]
+    }
+  }
+}

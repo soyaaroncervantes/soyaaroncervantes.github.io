@@ -1,0 +1,8 @@
+.layout {
+  padding: 1rem;
+
+  &.root {
+    justify-content: center;
+    align-items: center;
+  }
+}
