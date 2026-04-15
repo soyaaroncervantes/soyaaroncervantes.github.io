@@ -17,7 +17,6 @@
 
   "onCreateCommand": "bun install --frozen-lockfile",
   "updateContentCommand": "bun install --frozen-lockfile",
-  "postCreateCommand": "cp .env.example .env",
   "postAttachCommand": "bun dev --host",
 
   "customizations": {
