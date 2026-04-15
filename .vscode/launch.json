@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Debug application [ Chrome ]",
-            "url": "http://localhost:5173", // Debe coincidir con server.port en vite.config.ts
+            "url": "http://localhost:${env:VITE_APP_PORT}", // Debe coincidir con server.port en vite.config.ts
             "webRoot": "${workspaceFolder}",
             "preLaunchTask": "Start project",
             "smartStep": true,

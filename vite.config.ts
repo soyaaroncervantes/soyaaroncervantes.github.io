@@ -1,12 +1,12 @@
-import path from 'node:path';
-import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import path from 'node:path'
+import react from '@vitejs/plugin-react'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
 export default defineConfig({
-  base: '/react-template/',
+  base: '/',
   server: {
-    port: 5173,
+    port: Number(process.env.VITE_APP_PORT) || 5173,
   },
   plugins: [
     tanstackRouter({
