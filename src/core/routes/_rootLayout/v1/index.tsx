@@ -11,9 +11,18 @@ function V1Page() {
     <div>
       <Nav id="nav">
         <Nav.Rail>
-          <Nav.Item><Theme.Icon slot='icon' name='home' />Home</Nav.Item>
-          <Nav.Item><Theme.Icon slot='icon' name='settings' />Settings</Nav.Item>
-          <Nav.Item><Theme.Icon slot='icon' name='person' />Profile</Nav.Item>
+          <Nav.Item>
+            <Theme.Icon slot="icon" name="home" />
+            Home
+          </Nav.Item>
+          <Nav.Item>
+            <Theme.Icon slot="icon" name="settings" />
+            Settings
+          </Nav.Item>
+          <Nav.Item>
+            <Theme.Icon slot="icon" name="person" />
+            Profile
+          </Nav.Item>
         </Nav.Rail>
       </Nav>
     </div>
