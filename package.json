@@ -13,7 +13,8 @@
     "lint": "bunx biome lint ./src",
     "format": "bunx biome format --write ./src",
     "check": "bunx biome check --write ./src",
-    "prepare": "[ ! -f .env ] && cp .env.example .env || true && bunx simple-git-hooks"
+    "env:sync": "bun run scripts/sync-env.ts",
+    "prepare": "bun run env:sync && bunx simple-git-hooks"
   },
   "dependencies": {
     "@lit/react": "1.0.8",
