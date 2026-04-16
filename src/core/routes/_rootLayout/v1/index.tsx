@@ -11,13 +11,13 @@ function V1Page() {
     <div>
       <Nav id="nav">
         <Nav.Rail>
-          <Nav.Item>
-            <Theme.Icon slot="icon" name="home" />
+          <Nav.Item selected>
+            <Theme.Icon slot="icon" name="home"/>
             Home
           </Nav.Item>
           <Nav.Item>
-            <Theme.Icon slot="icon" name="settings" />
-            Settings
+            <Theme.Icon slot="icon" name="manage_history" />
+            Versions
           </Nav.Item>
           <Nav.Item>
             <Theme.Icon slot="icon" name="person" />

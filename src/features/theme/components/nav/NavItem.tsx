@@ -1,25 +1,33 @@
-import { M3eNavItem } from '@m3e/react/nav-bar'
+import { M3eNavItem, type M3eNavItemElement } from '@m3e/react/nav-bar'
 import type { ComponentProps, PropsWithChildren } from 'react'
-import { useEffect, useRef } from 'react'
-import { useNavItemHandlers } from './Nav'
+import { useCallback, useEffect, useRef } from 'react'
+import { useNav } from './Nav'
 
 type Props = PropsWithChildren & ComponentProps<typeof M3eNavItem> & {}
 export const NavItem = ({ children, onChange, selected, ...props }: Props) => {
-  const { onChangeHandler, onSelected, useNavItemRef } = useNavItemHandlers()
-  const handlersRef = useRef({ onChangeHandler, onSelected, useNavItemRef })
-  const m3eNavItemRef = useNavItemRef()
+  const { onSelected, item } = useNav()
+  const handlersRef = useRef({ onSelected, item })
+  const m3eNavItemRef = useRef<M3eNavItemElement>(null)
+  const initializedRef = useRef(selected)
+
+  const onChangeHandler = useCallback(() => {
+    if (!m3eNavItemRef.current) return
+    handlersRef.current.onSelected(m3eNavItemRef.current)
+  }, [])
 
   useEffect(() => {
-    if (!selected || !m3eNavItemRef.current) return
+    if (!initializedRef.current || !m3eNavItemRef.current) return
     handlersRef.current.onSelected(m3eNavItemRef.current)
-  }, [selected, m3eNavItemRef])
+  }, [])
+
+  const isSelected = item === m3eNavItemRef.current
 
   return (
     <M3eNavItem
       {...props}
-      selected={selected}
+      selected={isSelected}
       ref={m3eNavItemRef}
-      onChange={(e) => handlersRef.current.onChangeHandler(e, onChange)}
+      onChange={onChangeHandler}
     >
       {children}
     </M3eNavItem>
