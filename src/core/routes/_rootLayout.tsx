@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { BaseLayout } from '@/core/layouts/BaseLayout'
+import { Layout } from '@/core/layouts/Layout'
 
 export const Route = createFileRoute('/_rootLayout')({
   component: RootPage,
@@ -7,8 +7,8 @@ export const Route = createFileRoute('/_rootLayout')({
 
 function RootPage() {
   return (
-    <BaseLayout>
+    <Layout.Base>
       <Outlet />
-    </BaseLayout>
+    </Layout.Base>
   )
 }
