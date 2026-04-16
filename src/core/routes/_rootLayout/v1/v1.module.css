@@ -5,7 +5,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 4rem);
+  height: 100dvh;
   /* justify-content: space-around; */
   justify-content: space-between;
 }
@@ -16,9 +16,10 @@
 
 .nav {
   --m3e-nav-bar-container-color: #0b467e;
+  --m3e-nav-rail-compact-width: 4rem;
 }
 
-.nav--group {
+.group {
   display: flex;
   flex-direction: column;
 }

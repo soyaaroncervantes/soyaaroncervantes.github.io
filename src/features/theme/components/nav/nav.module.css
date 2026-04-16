@@ -5,9 +5,7 @@
 
 .nav {
   --m3e-nav-bar-container-color: var(--md-sys-color-surface-container);
+  --m3e-nav-rail-bottom-space: 0rem;
+  --m3e-nav-rail-top-space: 0rem;
   background-color: var(--m3e-nav-bar-container-color);
-  &.rail {
-    --m3e-nav-rail-compact-width: 6rem;
-    width: var(--m3e-nav-rail-compact-width);
-  }
 }
