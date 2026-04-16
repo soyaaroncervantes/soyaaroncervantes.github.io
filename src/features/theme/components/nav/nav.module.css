@@ -1,0 +1,13 @@
+/* M3E Nav Bar + Nav Rail: Override CSS Custom Properties
+ * CSS custom properties cross Shadow DOM boundaries, regular properties do not.
+ * M3E internally uses these variables in :host styles.
+ */
+
+.nav {
+  --m3e-nav-bar-container-color: var(--md-sys-color-surface-container);
+  background-color: var(--m3e-nav-bar-container-color);
+  &.rail {
+    --m3e-nav-rail-compact-width: 6rem;
+    width: var(--m3e-nav-rail-compact-width);
+  }
+}
