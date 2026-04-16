@@ -1,0 +1,27 @@
+.layout {
+  display: flex;
+  min-height: 100dvh;
+}
+
+.content {
+  padding: 2rem;
+  flex-grow: 1;
+  display: grid;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 4rem);
+  /* justify-content: space-around; */
+  justify-content: space-between;
+}
+
+.disabled {
+  flex-grow: 0;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
