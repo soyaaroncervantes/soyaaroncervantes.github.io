@@ -1,11 +1,11 @@
 import type { ComponentPropsWithoutRef } from 'react'
-import themeStyles from '@/features/theme/theme.module.css'
+import layouts from './layout.module.css'
 
 type ScreenLayoutProps = ComponentPropsWithoutRef<'div'>
 
 export function ScreenLayout({ children, className, ...props }: ScreenLayoutProps) {
   return (
-    <div className={[themeStyles.base, className].filter(Boolean).join(' ')} {...props}>
+    <div className={[layouts.screen, className].filter(Boolean).join(' ')} {...props}>
       {children}
     </div>
   )
