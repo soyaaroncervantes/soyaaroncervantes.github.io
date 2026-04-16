@@ -5,5 +5,5 @@ import { ScreenLayout } from './Screen'
 export const Layout = {
   Base: BaseLayout,
   Screen: ScreenLayout,
-  Content: ContentLayout
+  Content: ContentLayout,
 }
