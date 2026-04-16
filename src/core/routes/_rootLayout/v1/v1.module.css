@@ -1,12 +1,5 @@
-.layout {
-  display: flex;
-  min-height: 100dvh;
-}
-
 .content {
   padding: 2rem;
-  flex-grow: 1;
-  display: grid;
 }
 
 .container {
@@ -22,6 +15,10 @@
 }
 
 .nav {
+  --m3e-nav-bar-container-color: #0b467e;
+}
+
+.nav--group {
   display: flex;
   flex-direction: column;
 }
