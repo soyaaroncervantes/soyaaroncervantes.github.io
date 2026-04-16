@@ -21,7 +21,7 @@ export const ThemeProvider = ({ children }: Props) => {
   }, [])
 
   return (
-    <M3eTheme scheme={theme} color="#a8e6cf" motion="expressive">
+    <M3eTheme scheme={theme} color="#0b467e" motion="expressive">
       {children}
     </M3eTheme>
   )
