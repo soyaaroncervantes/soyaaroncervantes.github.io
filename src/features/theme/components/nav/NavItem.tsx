@@ -23,12 +23,7 @@ export const NavItem = ({ children, onChange, selected, ...props }: Props) => {
   const isSelected = item === m3eNavItemRef.current
 
   return (
-    <M3eNavItem
-      {...props}
-      selected={isSelected}
-      ref={m3eNavItemRef}
-      onChange={onChangeHandler}
-    >
+    <M3eNavItem {...props} selected={isSelected} ref={m3eNavItemRef} onChange={onChangeHandler}>
       {children}
     </M3eNavItem>
   )

@@ -31,11 +31,7 @@ export const Nav = ({ children, id, isOpen }: Props) => {
   }, [])
 
   return (
-    <NavContext.Provider
-      value={{ isOpen, id, item, onSelected }}
-    >
-      {children}
-    </NavContext.Provider>
+    <NavContext.Provider value={{ isOpen, id, item, onSelected }}>{children}</NavContext.Provider>
   )
 }
 
@@ -44,7 +40,7 @@ export const useNav = (): NavContextInternalType => {
   if (!context) {
     throw new Error('useNav must be used within a Nav component')
   }
-  return context;
+  return context
 }
 
 Nav.Rail = NavRail

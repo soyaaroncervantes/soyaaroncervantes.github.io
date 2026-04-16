@@ -12,7 +12,7 @@ function V1Page() {
       <Nav id="nav">
         <Nav.Rail>
           <Nav.Item selected>
-            <Theme.Icon slot="icon" name="home"/>
+            <Theme.Icon slot="icon" name="home" />
             Home
           </Nav.Item>
           <Nav.Item>
