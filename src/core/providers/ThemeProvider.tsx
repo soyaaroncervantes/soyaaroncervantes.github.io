@@ -1,27 +1,15 @@
 import { M3eTheme } from '@m3e/react/theme'
 import type { PropsWithChildren } from 'react'
-import { useEffect, useEffectEvent } from 'react'
-import { type ThemeType, useThemeStore } from '@/features/theme/theme.stores'
+import { useTheme } from '@/features/theme/hooks/useTheme'
 
 type Props = PropsWithChildren & {}
 
 export const ThemeProvider = ({ children }: Props) => {
-  const { theme, setTheme } = useThemeStore()
-
-  const onColorSchemeChange = useEffectEvent((e: MediaQueryListEvent) => {
-    const newTheme: ThemeType = e.matches ? 'dark' : 'light'
-    setTheme(newTheme)
-  })
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-
-    mediaQuery.addEventListener('change', onColorSchemeChange)
-    return () => mediaQuery.removeEventListener('change', onColorSchemeChange)
-  }, [])
+  const { theme } = useTheme()
+  const { scheme, color } = theme
 
   return (
-    <M3eTheme scheme={theme} color="#0b467e" motion="expressive">
+    <M3eTheme scheme={scheme} color={color} motion="expressive">
       {children}
     </M3eTheme>
   )
