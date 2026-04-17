@@ -6,10 +6,10 @@ type Props = PropsWithChildren & {}
 
 export const StoreProvider = ({ children }: Props) => {
   const scheme = getPreferredColorScheme()
-
+  const color = scheme === 'dark' ? '#aaceff' : '#1565a8'
   const storeInit: AppInitStoreProps = {
     scheme,
-    color: '#0b467e',
+    color,
   }
   return <Provider createStore={() => createStore(storeInit)}>{children}</Provider>
 }
