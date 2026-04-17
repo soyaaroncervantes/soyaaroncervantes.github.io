@@ -2,26 +2,36 @@ import type { ColorScheme as ThemeType } from '@m3e/react/theme'
 import { createSlice } from 'zustand-slices'
 import { useStore } from '@/core/stores/app.store'
 
-export type ThemeSliceInitProps = { theme: ThemeType }
+export type ThemeSliceInitProps = {
+  scheme: ThemeType
+  color: string
+}
 
 export const createThemeSlice = (init?: ThemeSliceInitProps) =>
   createSlice({
     name: 'theme',
-    value: (init?.theme ?? 'auto') as ThemeType,
+    value: {
+      scheme: init?.scheme ?? 'auto',
+      color: init?.color ?? '#0b467e',
+    },
     actions: {
-      setTheme: (theme: ThemeType) => () => theme,
+      setScheme: (scheme: ThemeType) => (prev) => ({ ...prev, scheme }),
+      setColor: (color: string) => (prev) => ({ ...prev, color }),
     },
   })
 
 export type ThemeSlice = {
   theme: ThemeType
-  setTheme: (theme: ThemeType) => void
+  color: string
+  setScheme: (scheme: ThemeType) => void
+  setColor: (color: string) => void
 }
 
 export const useThemeStore = () =>
-  useStore((state) => ({
-    theme: state.theme,
-    setTheme: state.setTheme,
+  useStore(({ theme, setScheme, setColor }) => ({
+    theme,
+    setScheme,
+    setColor,
   }))
 
 export type { ThemeType }

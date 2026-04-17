@@ -1,10 +1,15 @@
 import type { PropsWithChildren } from 'react'
-import { createStore, Provider } from '@/core/stores/app.store'
+import { createStore, Provider, type AppInitStoreProps } from '@/core/stores/app.store'
 import { getPreferredColorScheme } from '@/features/theme/usePreferredColorScheme'
 
 type Props = PropsWithChildren & {}
 
 export const StoreProvider = ({ children }: Props) => {
-  const theme = getPreferredColorScheme()
-  return <Provider createStore={() => createStore({ theme })}>{children}</Provider>
+  const scheme = getPreferredColorScheme()
+
+  const storeInit: AppInitStoreProps = {
+    scheme,
+    color: "#0b467e"
+  }
+  return <Provider createStore={() => createStore(storeInit)}>{children}</Provider>
 }
