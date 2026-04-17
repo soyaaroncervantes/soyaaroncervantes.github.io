@@ -9,3 +9,19 @@
   --m3e-nav-rail-top-space: 0rem;
   background-color: var(--m3e-nav-bar-container-color);
 }
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.disabled {
+  flex-grow: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+

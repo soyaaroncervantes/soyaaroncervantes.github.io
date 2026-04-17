@@ -3,23 +3,14 @@
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  height: 100dvh;
-  /* justify-content: space-around; */
   justify-content: space-between;
 }
 
-.disabled {
-  flex-grow: 0;
-}
-
 .nav {
-  --m3e-nav-bar-container-color: if(media(prefers-color-scheme: dark): #0b467e; else: #d4e3ff);
+  --m3e-nav-bar-container-color: var(--md-sys-color-inverse-primary);
   --m3e-nav-rail-compact-width: 4rem;
 }
 
-.group {
-  display: flex;
-  flex-direction: column;
+m3e-nav-item {
+  --m3e-nav-item-active-container-color: none;
 }

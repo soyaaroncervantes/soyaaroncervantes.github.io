@@ -1,4 +1,3 @@
-import { M3eNavMenuItemGroup } from '@m3e/react/nav-menu'
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '@/core/layouts/Layout'
 import { Nav } from '@/features/theme/components/nav/Nav'
@@ -13,20 +12,20 @@ function V1Page() {
     <Layout.Screen>
       <Nav id="nav">
         <Nav.Rail className={styles.nav}>
-          <div className={styles.container}>
-            <Nav.Item disabled className={styles.disabled} />
-            <M3eNavMenuItemGroup className={styles.group}>
-              <Nav.Item icon="person" />
+          <Nav.Container className={styles.container}>
+            <Nav.Item disabled />
+            <Nav.Group>
+              <Nav.Item icon="person" selected />
               <Nav.Item icon="email" />
-            </M3eNavMenuItemGroup>
-            <M3eNavMenuItemGroup className={styles.group}>
+            </Nav.Group>
+            <Nav.Group>
               <Nav.Item icon="share" />
               <Nav.Item icon="download" />
-            </M3eNavMenuItemGroup>
-          </div>
+            </Nav.Group>
+          </Nav.Container>
         </Nav.Rail>
       </Nav>
-      <Layout.Content>
+      <Layout.Content className={styles.content}>
         <section></section>
       </Layout.Content>
     </Layout.Screen>

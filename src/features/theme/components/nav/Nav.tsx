@@ -2,6 +2,8 @@ import type { M3eNavItemElement } from '@m3e/react/nav-bar'
 import type { PropsWithChildren } from 'react'
 import { createContext, use, useCallback, useState } from 'react'
 import type { Nullable } from '@/shared/base.types'
+import { NavContainer } from './NavContainer'
+import { NavGroup } from './NavGroup'
 import { NavItem } from './NavItem'
 import { NavRail } from './NavRail'
 import { NavRailToggle } from './NavRailToggle'
@@ -46,3 +48,5 @@ export const useNav = (): NavContextInternalType => {
 Nav.Rail = NavRail
 Nav.Item = NavItem
 Nav.Toggle = NavRailToggle
+Nav.Group = NavGroup
+Nav.Container = NavContainer
