@@ -15,7 +15,7 @@
 }
 
 .nav {
-  --m3e-nav-bar-container-color: #0b467e;
+  --m3e-nav-bar-container-color: if(media(prefers-color-scheme: dark): #0b467e; else: #d4e3ff);
   --m3e-nav-rail-compact-width: 4rem;
 }
 
