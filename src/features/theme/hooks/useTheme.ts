@@ -6,7 +6,7 @@ export const useTheme = () => {
 
   const onColorSchemeChange = useEffectEvent((e: MediaQueryListEvent) => {
     const newTheme: ThemeType = e.matches ? 'dark' : 'light'
-    const color = newTheme === 'dark' ? '#aaceff' : '#1565a8'
+    const color = newTheme === 'dark' ? '#1565a8' : '#aaceff'
     setScheme(newTheme)
     setColor(color)
   })

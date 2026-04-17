@@ -2,257 +2,138 @@
 
 ## Overview
 
-The `Nav` component implements a **context-based, handler-driven architecture** for managing navigation state and item selection in M3E (`m3e-nav-bar` and `m3e-nav-rail`) components.
+The `Nav` component implements a **context-based compound component** for managing navigation state and item selection using M3E (`@m3e/react/nav-bar`, `@m3e/react/nav-rail`, `@m3e/react/nav-menu`) components.
 
-## Architecture Pattern
+## File Structure
 
-### Public API: `useNav()`
+```
+features/theme/
+  hooks/
+    useNavItemController.ts  — ViewController hook: selection logic for NavItem
+  components/nav/
+    Nav.tsx           — root compound component + context + useNav hook
+    NavRail.tsx       — wrapper for M3eNavRail
+    NavRailToggle.tsx — wrapper for M3eNavRailToggle
+    NavItem.tsx       — UI-only wrapper for M3eNavItem (styling concerns only)
+    NavGroup.tsx      — wrapper for M3eNavMenuItemGroup
+    NavContainer.tsx  — wrapper for native div (layout container)
+    nav.module.css    — base CSS classes for all sub-components
+```
 
-Exposes the **public navigation state**:
+## Compound Component API
 
-```typescript
-export type NavContextType = {
-    isOpen: boolean;           // Nav rail open/closed state
-    id: Nullable<string>;      // Nav container ID
-    item: Nullable<M3eNavItemElement>; // Currently selected item
-}
+All sub-components are registered as properties of `Nav`:
+
+```tsx
+Nav.Rail = NavRail
+Nav.Item = NavItem
+Nav.Toggle = NavRailToggle
+Nav.Group = NavGroup
+Nav.Container = NavContainer
 ```
 
 **Usage:**
 ```tsx
-const { isOpen, id, item } = useNav();
+<Nav id="nav">
+  <Nav.Rail className={styles.nav}>
+    <Nav.Container className={styles.container}>
+      <Nav.Item disabled />
+      <Nav.Group>
+        <Nav.Item icon="person" selected />
+        <Nav.Item icon="email" />
+      </Nav.Group>
+    </Nav.Container>
+  </Nav.Rail>
+</Nav>
 ```
 
-### Internal API: `useNavItemHandlers()`
+Only `Nav` needs to be imported — all sub-components are accessed via dot notation.
 
-Exposes **internal handlers** for `NavItem` components only (not part of public type):
+---
+
+## Context Architecture
+
+### `NavContextType` (public)
+
+Exposes the public navigation state consumed by external components via `useNav()`:
 
 ```typescript
-export const useNavItemHandlers = () => ({
-    onChangeHandler: (e: Event, onChange?: (e: Event) => void) => void;
-    onSelected: (element: M3eNavItemElement) => void;
-    useNavItemRef: () => React.RefObject<M3eNavItemElement | null>;
-})
-```
-
-**Design Rationale:**
-- Follows **Open/Closed Principle** — public API is closed to internal changes
-- Handlers are "private" conceptually, only exposed via `useNavItemHandlers()`
-- Ref is centralized in `Nav` context, not duplicated in each `NavItem`
-
-## Implementation Details
-
-### Ref Management
-
-The `m3eNavItemRef` is created and managed in `Nav`:
-
-```tsx
-const m3eNavItemRef = useRef<M3eNavItemElement>(null);
-const useNavItemRef = () => m3eNavItemRef;
-```
-
-**Benefits:**
-- Single source of truth for the DOM element
-- Avoids ambiguity between `e.target` (event target) and actual element
-- Enables safe access to `element.selected` property
-
-### Handler Caching in NavItem
-
-`NavItem` caches handlers via `useRef` to avoid stale closures:
-
-```tsx
-const {onChangeHandler, onSelected, useNavItemRef} = useNavItemHandlers();
-const handlersRef = useRef({onChangeHandler, onSelected, useNavItemRef});
-
-useEffect(() => {
-    if (!selected || !m3eNavItemRef.current) return;
-    handlersRef.current.onSelected(m3eNavItemRef.current);
-}, [selected, m3eNavItemRef])
-```
-
-### Event Flow
-
-1. **User clicks NavItem** → M3E emits `change` event
-2. `onChangeHandler` fires → checks `m3eNavItemRef.current.selected`
-3. If selected → calls `onNavItemHandler(element)` → updates context state
-4. Context state updates → `item` is set to the selected element
-
-5. **Programmatic selection** (via `selected` prop) → `useEffect` detects change
-6. Calls `handlersRef.current.onSelected(element)` → same flow as above
-
-## M3E Component Integration
-
-### M3E Nav Bar / Nav Rail
-
-Reference: https://matraic.github.io/m3e/#/components/nav-rail.html
-
-**Key Features:**
-- Single-select only
-- `selected` attribute on `m3e-nav-item` indicates active item
-- Emits `input` (cancellable) and `change` events on selection
-- Supports `selected-icon` slot for alternate icon when selected
-
-**Selection Handling:**
-```html
-<m3e-nav-bar>
-  <m3e-nav-item selected>
-    <m3e-icon slot="icon" name="news"></m3e-icon>
-    News
-  </m3e-nav-item>
-</m3e-nav-bar>
-```
-
-### React Binding
-
-M3E provides React bindings via `@m3e/react/nav-bar`:
-
-```typescript
-import { M3eNavItem, type M3eNavItemElement } from "@m3e/react/nav-bar"
-
-// Props map directly to element properties
-// Event handlers receive native DOM events
-// Refs forward to underlying <m3e-nav-item> instance
-```
-
-**Events exposed:**
-- `onInput` — cancellable, fires before selection change
-- `onChange` — fires after selection change (our primary handler)
-- `onClick` — standard click event
-
-## SOLID Principles Applied
-
-### Open/Closed Principle
-- `NavContextType` (public) is closed to internal implementation changes
-- Open to extension via `useNav()` hook
-- Internal handlers hidden behind `useNavItemHandlers()`
-
-### Single Responsibility
-- `useNav()` — manages and exposes public state
-- `useNavItemHandlers()` — manages internal handler logic
-- `NavItem` — consumes and applies handlers to M3E component
-
-### Dependency Inversion
-- `NavItem` depends on abstractions (`useNavItemHandlers`), not concrete implementations
-- Handlers are injected via context, not created locally
-
-## Future Extensions
-
-### Potential Enhancements
-
-1. **Multi-select support** — extend `NavContextType` with `items: M3eNavItemElement[]`
-2. **Event cancellation** — expose `onInput` handler to allow `preventDefault()`
-3. **Keyboard navigation** — integrate with M3E's keyboard support
-4. **Nested navigation** — support hierarchical nav structures
-5. **Accessibility** — enhance ARIA attributes and focus management
-
-### Adding New Handlers
-
-To add a new handler (e.g., `onItemHover`):
-
-1. Add to `NavContextInternalType`
-2. Define in `Nav` component with `useEffectEvent`
-3. Expose via `useNavItemHandlers()`
-4. Keep `NavContextType` unchanged (public API stability)
-
-## Testing
-
-### Unit Test Patterns
-
-```typescript
-// Test public API
-const { item, isOpen } = useNav();
-expect(item).toBe(selectedElement);
-
-// Test internal handlers
-const { onSelected } = useNavItemHandlers();
-onSelected(mockElement);
-expect(context.item).toBe(mockElement);
-
-// Test NavItem integration
-render(<NavItem selected={true} onChange={mockHandler} />);
-expect(mockHandler).toHaveBeenCalled();
-```
-
-## CSS Theming with nav.module.css
-
-### Shadow DOM and CSS Custom Properties
-
-M3E components use **Shadow DOM**, which creates encapsulation boundaries:
-
-| CSS Feature | Crosses Shadow DOM? | Use Case |
-|-------------|---------------------|----------|
-| Regular properties (`background-color`, `width`) | ❌ No | Internal component styling |
-| CSS Custom Properties (`--variable-name`) | ✅ Yes | Theming and customization |
-
-**Key Insight:** You cannot directly style M3E components from outside their Shadow DOM using regular CSS properties. Instead, M3E exposes **CSS custom properties** that you can override.
-
-### How M3E Uses CSS Variables Internally
-
-M3E components define their styles using CSS custom properties in `:host`:
-
-```css
-/* Inside m3e-nav-rail Shadow DOM */
-:host {
-  background-color: var(--m3e-nav-bar-container-color, #default-color);
-  width: var(--m3e-nav-rail-compact-width, 6rem);
+export type NavContextType = {
+  isOpen?: boolean                    // Nav rail open/closed state
+  id?: string                         // Nav container ID (forwarded to M3eNavRail)
+  item?: Nullable<M3eNavItemElement>  // Currently selected nav item element
 }
 ```
 
-When you define these variables on the host element or an ancestor, they **inherit into the Shadow DOM**:
+### `NavContextInternalType` (internal)
 
-```css
-/* Your stylesheet (nav.module.css) */
-.nav {
-  --m3e-nav-bar-container-color: #0b467e;
+Extends the public type with internal handlers — not exported:
+
+```typescript
+type NavContextInternalType = NavContextType & {
+  onSelected: (element: M3eNavItemElement) => void
 }
 ```
 
-**Result:** M3E's internal `:host` styles pick up your custom value.
+`onSelected` is only used by `NavItem`. Keeping it off the public type prevents external consumers from misusing it.
 
-### nav.module.css Structure
+### `NavContext`
 
-```css
-/* M3E Nav Bar + Nav Rail: Override CSS Custom Properties
- * CSS custom properties cross Shadow DOM boundaries, regular properties do not.
- * M3E internally uses these variables in :host styles.
- */
+Created with `null` default — forces `useNav()` to throw if used outside `Nav`:
 
-.nav {
-  --m3e-nav-bar-container-color: var(--md-sys-color-surface-container);
-  background-color: var(--m3e-nav-bar-container-color);
-  &.rail {
-    --m3e-nav-rail-compact-width: 6rem;
-    width: var(--m3e-nav-rail-compact-width);
+```tsx
+const NavContext = createContext<Nullable<NavContextInternalType>>(null)
+```
+
+### `useNav()` hook
+
+The only way to access the Nav context. Throws a descriptive error if called outside a `Nav`:
+
+```tsx
+export const useNav = (): NavContextInternalType => {
+  const context = use(NavContext)
+  if (!context) {
+    throw new Error('useNav must be used within a Nav component')
   }
+  return context
 }
 ```
 
-**Why both variable AND property?**
+Used internally by `NavRail` (reads `id`) and `NavItem` (reads `item`, calls `onSelected`).
 
-1. **`--m3e-nav-bar-container-color`** — M3E uses this internally for sub-elements in Shadow DOM
-2. **`background-color`** — Applied to the host element itself (outside Shadow DOM)
+---
 
-M3E's Shadow DOM may not apply `background-color` to `:host` directly, so we apply it externally on the host element.
+## Sub-Component Details
 
-### Available M3E CSS Custom Properties
+### `Nav` (`Nav.tsx`)
 
-#### Nav Bar (shared with Nav Rail)
-- `--m3e-nav-bar-container-color` — Background color of navigation container
-- `--m3e-nav-bar-height` — Height of navigation bar
-- `--m3e-nav-bar-vertical-item-width` — Minimum width of vertical nav items
+Root component. Manages selection state and provides context.
 
-#### Nav Rail (specific)
-- `--m3e-nav-rail-bottom-space` — Bottom block padding
-- `--m3e-nav-rail-button-item-space` — Space below icon buttons and FABs
-- `--m3e-nav-rail-compact-width` — Width in compact mode
-- `--m3e-nav-rail-expanded-icon-button-inset` — Inset for icon buttons (expanded)
-- `--m3e-nav-rail-expanded-inline-padding` — Inline padding (expanded)
-- `--m3e-nav-rail-expanded-item-height` — Height of nav items (expanded)
-- `--m3e-nav-rail-expanded-max-width` — Maximum width (expanded)
-- `--m3e-nav-rail-expanded-min-width` — Minimum width (expanded)
-- `--m3e-nav-rail-top-space` — Top block padding
+```tsx
+export const Nav = ({ children, id, isOpen }: Props) => {
+  const [item, setNavItem] = useState<Nullable<M3eNavItemElement>>(null)
 
-### Usage in NavRail Component
+  const onSelected = useCallback((element: M3eNavItemElement) => {
+    setNavItem(element)
+  }, [])
+
+  return (
+    <NavContext.Provider value={{ isOpen, id, item, onSelected }}>
+      {children}
+    </NavContext.Provider>
+  )
+}
+```
+
+- `id` is passed to context and forwarded by `NavRail` to `M3eNavRail`
+- `onSelected` is memoized with `useCallback` — stable reference, no re-renders
+- `item` state holds the currently selected `M3eNavItemElement` DOM reference
+
+---
+
+### `NavRail` (`NavRail.tsx`)
+
+Wraps `M3eNavRail`. Reads `id` from context and applies base CSS classes.
 
 ```tsx
 export const NavRail = ({ children, className, ...props }: Props) => {
@@ -269,50 +150,241 @@ export const NavRail = ({ children, className, ...props }: Props) => {
 }
 ```
 
-**Class application:**
-- `styles.nav` — Base nav styles with `--m3e-nav-bar-container-color`
-- `styles.rail` — Rail-specific styles with `--m3e-nav-rail-compact-width`
-- `className` — User-provided classes for page-specific overrides
+- Always applies `styles.nav` (CSS custom properties for M3E theming) and `styles.rail`
+- `className` from props is appended — enables page-level CSS overrides
+- `id` from context links the rail to its toggle (`NavRailToggle`)
 
-### Customizing in Pages
+> Note: `nav.module.css` does not define `.rail`. It is referenced but not declared — verify if it should be added.
 
-Pages can override variables for specific instances:
+---
+
+### `NavRailToggle` (`NavRailToggle.tsx`)
+
+Thin wrapper around `M3eNavRailToggle`. Does not use `useNav()`.
+
+```tsx
+type Props = PropsWithChildren &
+  ComponentProps<typeof M3eNavRailToggle> & {
+    id: string  // required — links toggle to rail via matching id
+  }
+
+export const NavRailToggle = ({ children, id, ...props }: Props) => {
+  return <M3eNavRailToggle {...props}>{children}</M3eNavRailToggle>
+}
+```
+
+> Note: `id` is destructured but not forwarded to `M3eNavRailToggle`. Verify if this is intentional or a bug.
+
+---
+
+### `NavItem` (`NavItem.tsx`)
+
+UI-only component. Delegates all selection logic to `useNavItemController`. Retains styling concerns (`resolvedClassName`) as they are UI-layer responsibilities.
+
+```tsx
+export const NavItem = ({ children, className, ...props }: Props) => {
+  const { m3eNavItemRef, isSelected, onChangeHandler } = useNavItemController(props)
+
+  const resolvedClassName = [props.disabled && styles.disabled, className].filter(Boolean).join(' ') || undefined
+
+  return (
+    <M3eNavItem {...props} selected={isSelected} ref={m3eNavItemRef} onChange={onChangeHandler} className={resolvedClassName}>
+      {props.icon && <Theme.Icon slot="icon" name={props.icon} />}
+      {children}
+    </M3eNavItem>
+  )
+}
+```
+
+**What stays in `NavItem` (UI concerns):**
+- `resolvedClassName` — combines `styles.disabled` and `className`; directly conditions the rendered output
+- `props.icon` — renders `Theme.Icon` into the M3E slot
+- `children` — pass-through to M3E
+
+**What lives in `useNavItemController` (logic concerns):**
+- Context interaction (`useNav`)
+- DOM ref management (`m3eNavItemRef`)
+- Selection state (`isSelected`)
+- Event handler (`onChangeHandler`)
+- Initial selection effect (`useEffect` on mount)
+
+---
+
+### `useNavItemController` (`src/features/theme/hooks/useNavItemController.ts`)
+
+ViewController hook for `NavItem`. Follows the MVVM-inspired pattern where the hook owns all lifecycle and interaction logic, keeping the component as pure UI.
+
+```ts
+export const useNavItemController = ({ selected, onChange: _onChange }: Props) => {
+  const { onSelected, item } = useNav()
+  const handlersRef = useRef({ onSelected, item })
+  const m3eNavItemRef = useRef<M3eNavItemElement>(null)
+  const initializedRef = useRef(selected)
+
+  const onChangeHandler = useCallback(() => {
+    if (!m3eNavItemRef.current) return
+    handlersRef.current.onSelected(m3eNavItemRef.current)
+  }, [])
+
+  useEffect(() => {
+    if (!initializedRef.current || !m3eNavItemRef.current) return
+    handlersRef.current.onSelected(m3eNavItemRef.current)
+  }, [])
+
+  const isSelected = item === m3eNavItemRef.current
+
+  return { m3eNavItemRef, isSelected, onChangeHandler }
+}
+```
+
+**Selection logic:**
+
+1. **Ref identity:** `isSelected = item === m3eNavItemRef.current` — determined by comparing context `item` against this item's DOM ref.
+
+2. **User click:** M3E emits `change` → `onChangeHandler` → `onSelected(element)` → context `item` updates → all `NavItem`s re-evaluate `isSelected`.
+
+3. **Initial selection:** `initializedRef` captures the initial `selected` value. `useEffect` on mount fires once: if `selected` was truthy, calls `onSelected` to register this item in context.
+
+4. **Handler stability:** `handlersRef` caches `onSelected` and `item` to avoid stale closures without re-creating `onChangeHandler`.
+
+5. **`onChange` from props is discarded** (`onChange: _onChange`) — the hook provides its own `onChangeHandler` wired to the context. The caller's `onChange` would conflict with the context-driven selection flow.
+
+---
+
+### `NavGroup` (`NavGroup.tsx`)
+
+Wraps `M3eNavMenuItemGroup` with the base class `.group`.
+
+```tsx
+type Props = PropsWithChildren & ComponentProps<typeof M3eNavMenuItemGroup>
+
+export const NavGroup = ({ children, className, ...props }: Props) => (
+  <M3eNavMenuItemGroup {...props} className={[styles.group, className].filter(Boolean).join(' ')}>
+    {children}
+  </M3eNavMenuItemGroup>
+)
+```
+
+- Base class `.group`: `display: flex; flex-direction: column`
+- Replaces direct use of `M3eNavMenuItemGroup` in pages
+- Does not consume `useNav()` — purely presentational
+
+---
+
+### `NavContainer` (`NavContainer.tsx`)
+
+Wraps a native `div`. Layout container for items inside `NavRail`.
+
+```tsx
+type Props = PropsWithChildren & HTMLAttributes<HTMLDivElement>
+
+export const NavContainer = ({ children, className, ...props }: Props) => (
+  <div {...props} className={[styles.container, className].filter(Boolean).join(' ')}>
+    {children}
+  </div>
+)
+```
+
+- Base class `.container`: `display: flex; flex-direction: column; height: 100dvh`
+- Does not consume `useNav()` — purely presentational
+- Uses `HTMLAttributes<HTMLDivElement>` (not `ComponentProps`) since it wraps a native element
+
+---
+
+## CSS: `nav.module.css`
+
+Base classes applied by sub-components. Pages can extend via their own CSS module.
+
+```css
+.nav {
+  --m3e-nav-bar-container-color: var(--md-sys-color-surface-container);
+  --m3e-nav-rail-bottom-space: 0rem;
+  --m3e-nav-rail-top-space: 0rem;
+  background-color: var(--m3e-nav-bar-container-color);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.disabled {
+  flex-grow: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+```
+
+### Shadow DOM and CSS Custom Properties
+
+M3E components use Shadow DOM. Regular CSS properties do not cross Shadow DOM boundaries — only CSS custom properties (`--variable`) do.
+
+| CSS Feature | Crosses Shadow DOM? |
+|---|---|
+| `background-color`, `width`, etc. | ❌ No |
+| `--m3e-*` custom properties | ✅ Yes |
+
+`.nav` sets both:
+- `--m3e-nav-bar-container-color` — inherited into Shadow DOM for M3E internal use
+- `background-color` — applied on the host element itself (outside Shadow DOM)
+
+### Page-level Overrides
+
+Pages pass a `className` to override or extend base styles:
 
 ```css
 /* v1.module.css */
 .nav {
-  --m3e-nav-bar-container-color: #0b467e;
-  background-color: var(--m3e-nav-bar-container-color);
+  --m3e-nav-bar-container-color: var(--md-sys-color-inverse-primary);
+  --m3e-nav-rail-compact-width: 4rem;
+}
+
+.container {
+  justify-content: space-between;
 }
 ```
 
 ```tsx
 <Nav.Rail className={styles.nav}>
-  {/* Nav items */}
-</Nav.Rail>
+  <Nav.Container className={styles.container}>
 ```
 
-**Cascade order:**
-1. M3E default values (fallbacks in `var(--variable, default)`)
+Cascade order:
+1. M3E defaults (fallbacks inside `var(--var, default)`)
 2. `nav.module.css` base values
-3. Page-specific overrides (e.g., `v1.module.css`)
+3. Page-level overrides (e.g., `v1.module.css`)
 
-### Debugging CSS Variables
+---
 
-**DevTools inspection:**
-1. Open DevTools → Elements
-2. Select `m3e-nav-rail` element
-3. Check **Computed** tab → scroll to bottom for CSS variables
-4. Look for `--m3e-*` variables and their resolved values
+## CSS Class Merge Pattern
 
-**Common issues:**
-- ❌ Variable defined but not applied → Check if M3E uses it internally
-- ❌ Color not changing → Apply `background-color` to host element
-- ❌ Width not changing → Apply `width` to host element
+All sub-components follow the same pattern:
+
+```tsx
+[styles.baseClass, className].filter(Boolean).join(' ')
+```
+
+- Base class always comes first
+- `className` from props appended last — wins via CSS cascade
+- `filter(Boolean)` removes `undefined` / `false` safely
+- For conditional classes: `[condition && styles.cls, className].filter(Boolean).join(' ') || undefined`
+
+---
+
+## SOLID Principles Applied
+
+- **Single Responsibility** — each sub-component has one role (layout, grouping, selection, wrapping)
+- **Open/Closed** — `NavContextType` public API is stable; extend internally via `NavContextInternalType`
+- **Dependency Inversion** — `NavItem` depends on `useNav()` abstraction, not on `Nav` directly
+
+---
 
 ## References
 
-- **M3E Documentation:** https://matraic.github.io/m3e/
 - **M3E Nav Rail:** https://matraic.github.io/m3e/#/components/nav-rail.html
 - **M3E Nav Bar:** https://matraic.github.io/m3e/#/components/nav-bar.html
 - **Material Design 3 Navigation:** https://m3.material.io/components/navigation-rail/guidelines
