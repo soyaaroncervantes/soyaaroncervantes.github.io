@@ -22,6 +22,7 @@
       "type": "shell",
       "command": "bun dev",
       "dependsOn": ["Sync env"],
+      "isBackground": true,
       "group": {
         "kind": "build",
         "isDefault": true
@@ -33,7 +34,25 @@
         "panel": "shared",
         "showReuseMessage": true,
         "clear": false
-      }
+      },
+      "problemMatcher": [
+        {
+          "owner": "vite",
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "VITE",
+            "endsPattern": "Local:.*http://localhost"
+          }
+        }
+      ]
     }
   ]
 }
