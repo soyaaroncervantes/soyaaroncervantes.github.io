@@ -18,6 +18,8 @@
 
 .nav {
   --m3e-nav-bar-container-color: var(--md-sys-color-inverse-primary);
+  --m3e-nav-item-active-icon-color: var(--md-sys-color-on-primary-container);
+  --m3e-nav-item-inactive-icon-color: var(--md-sys-color-on-primary-container);
   --m3e-nav-rail-compact-width: 4rem;
   min-width: fit-content;
 }

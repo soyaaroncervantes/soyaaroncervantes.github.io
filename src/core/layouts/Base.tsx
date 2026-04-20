@@ -5,7 +5,10 @@ type BaseLayoutProps = ComponentPropsWithoutRef<'div'>
 
 export function BaseLayout({ children, className, ...props }: BaseLayoutProps) {
   return (
-    <div className={[layouts.base, layouts.palette, className].filter(Boolean).join(' ')} {...props}>
+    <div
+      className={[layouts.base, layouts.palette, className].filter(Boolean).join(' ')}
+      {...props}
+    >
       {children}
     </div>
   )

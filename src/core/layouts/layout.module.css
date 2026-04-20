@@ -12,7 +12,10 @@
   --md-sys-color-secondary: if(media(prefers-color-scheme: dark): #ffb2bf; else: #ab2f53);
   --md-sys-color-on-secondary: if(media(prefers-color-scheme: dark): #660027; else: #ffffff);
   --md-sys-color-secondary-container: if(media(prefers-color-scheme: dark): #8a133c; else: #ffd9de);
-  --md-sys-color-on-secondary-container: if(media(prefers-color-scheme: dark): #ffd9de; else: #3f0016);
+  --md-sys-color-on-secondary-container: if(
+    media(prefers-color-scheme: dark): #ffd9de;
+    else: #3f0016;
+  );
 }
 
 .screen {

@@ -5,9 +5,10 @@ import { ThemeCardContent } from './CardContent'
 import { ThemeCardFooter } from './CardFooter'
 import { ThemeCardHeader } from './CardHeader'
 
-export type ThemeCardProps = PropsWithChildren & ComponentProps<typeof M3eCard> & {
-  color?: string
-}
+export type ThemeCardProps = PropsWithChildren &
+  ComponentProps<typeof M3eCard> & {
+    color?: string
+  }
 
 export const ThemeCard = ({ children, ...props }: ThemeCardProps) => {
   return <M3eCard {...props}>{children}</M3eCard>
