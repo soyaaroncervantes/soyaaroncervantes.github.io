@@ -1,11 +1,14 @@
 .card {
   --m3e-filled-card-container-color: #8a133c;
+  --m3e-card-shape: 1.5rem;
   width: fit-content;
 }
 
 .img {
   width: fit-content;
   height: 30rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .container {
