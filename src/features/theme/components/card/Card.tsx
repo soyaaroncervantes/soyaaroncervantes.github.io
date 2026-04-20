@@ -4,6 +4,7 @@ import { ThemeCardActions } from './CardActions'
 import { ThemeCardContent } from './CardContent'
 import { ThemeCardFooter } from './CardFooter'
 import { ThemeCardHeader } from './CardHeader'
+import cardStyles from './card.module.css'
 
 export type ThemeCardProps = PropsWithChildren &
   ComponentProps<typeof M3eCard> & {
@@ -11,7 +12,7 @@ export type ThemeCardProps = PropsWithChildren &
   }
 
 export const ThemeCard = ({ children, ...props }: ThemeCardProps) => {
-  return <M3eCard {...props}>{children}</M3eCard>
+  return <M3eCard {...props} className={[cardStyles.base, props.className].filter(Boolean).join(' ')}>{children}</M3eCard>
 }
 
 export const Card = ThemeCard as typeof ThemeCard & {
