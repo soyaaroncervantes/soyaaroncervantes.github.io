@@ -4,11 +4,6 @@
   width: fit-content;
 }
 
-.card[color="secondary"] {
-  --m3e-card-container-color: var(--md-sys-color-secondary-container);
-  --m3e-card-text-color: var(--md-sys-color-on-secondary-container);
-}
-
 .header {
   overflow: hidden;
   border-top-left-radius: var(--m3e-card-shape);

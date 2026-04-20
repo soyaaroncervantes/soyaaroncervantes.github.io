@@ -145,7 +145,7 @@ function V1Page() {
           </div>
         </section>
         <section className={styles.profile}>
-          <Card className={profileStyles.card} color="secondary">
+          <Card className={profileStyles.card} color="primary">
             <div slot="header" className={profileStyles.header}>
               <img
                 className={profileStyles.img}
