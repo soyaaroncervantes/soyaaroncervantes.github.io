@@ -17,9 +17,12 @@
 }
 
 .nav {
-  --m3e-nav-bar-container-color: var(--md-sys-color-inverse-primary);
   --m3e-nav-rail-compact-width: 4rem;
   min-width: fit-content;
+}
+
+.nav[color="primary"] {
+  --m3e-nav-bar-container-color: var(--md-sys-color-inverse-primary);
 }
 
 m3e-nav-item {

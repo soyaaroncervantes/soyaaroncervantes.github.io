@@ -3,9 +3,10 @@ import type { ComponentProps, PropsWithChildren } from 'react'
 import { useNav } from './Nav'
 import styles from './nav.module.css'
 
-type Props = PropsWithChildren & ComponentProps<typeof M3eNavRail> & {
-  color?: string
-}
+type Props = PropsWithChildren &
+  ComponentProps<typeof M3eNavRail> & {
+    color?: string
+  }
 export const NavRail = ({ children, className, color, ...props }: Props) => {
   const { id } = useNav()
   return (
