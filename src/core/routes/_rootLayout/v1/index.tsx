@@ -15,7 +15,7 @@ function V1Page() {
   return (
     <Layout.Screen>
       <Nav id="nav">
-        <Nav.Rail className={styles.nav}>
+        <Nav.Rail className={styles.nav} color="primary">
           <Nav.Container className={styles.container}>
             <Nav.Item disabled />
             <Nav.Group>
