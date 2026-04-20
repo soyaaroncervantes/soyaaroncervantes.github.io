@@ -12,7 +12,11 @@ export type ThemeCardProps = PropsWithChildren &
   }
 
 export const ThemeCard = ({ children, ...props }: ThemeCardProps) => {
-  return <M3eCard {...props} className={[cardStyles.base, props.className].filter(Boolean).join(' ')}>{children}</M3eCard>
+  return (
+    <M3eCard {...props} className={[cardStyles.base, props.className].filter(Boolean).join(' ')}>
+      {children}
+    </M3eCard>
+  )
 }
 
 export const Card = ThemeCard as typeof ThemeCard & {
