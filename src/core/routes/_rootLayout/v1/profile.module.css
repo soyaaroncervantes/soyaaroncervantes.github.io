@@ -1,8 +1,12 @@
 .card {
-  --m3e-filled-card-container-color: #8a133c;
   --m3e-card-shape: 1.5rem;
   --m3e-card-padding: 0;
   width: fit-content;
+}
+
+.card[color="secondary"] {
+  --m3e-card-container-color: var(--md-sys-color-secondary-container);
+  --m3e-card-text-color: var(--md-sys-color-on-secondary-container);
 }
 
 .header {
@@ -33,6 +37,7 @@
 .media {
   width: var(--size, 2rem);
   height: var(--size, 2rem);
+  color: var(--m3e-card-text-color);
 }
 
 .container {

@@ -31,7 +31,7 @@ function V1Page() {
       </Nav>
       <Layout.Content className={styles.content}>
         <section className={styles.profile}>
-          <Card className={profileStyles.card}>
+          <Card className={profileStyles.card} color="secondary">
             <div slot="header" className={profileStyles.header}>
               <img
                 className={profileStyles.img}
@@ -145,7 +145,7 @@ function V1Page() {
           </div>
         </section>
         <section className={styles.profile}>
-          <Card className={profileStyles.card}>
+          <Card className={profileStyles.card} color="secondary">
             <div slot="header" className={profileStyles.header}>
               <img
                 className={profileStyles.img}
