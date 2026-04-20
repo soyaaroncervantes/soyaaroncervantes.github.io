@@ -1,0 +1,29 @@
+.card {
+  width: fit-content;
+}
+
+.img {
+  width: fit-content;
+  height: 30rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  align-items: center;
+}
