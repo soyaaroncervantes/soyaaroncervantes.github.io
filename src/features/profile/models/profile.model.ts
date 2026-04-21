@@ -5,7 +5,7 @@ export class ProfileModel {
   readonly #firstName: string
   readonly #lastName: string
   readonly #jobTitle: string
-  readonly #username: Nullable<string> = null;
+  readonly #username: Nullable<string> = null
   readonly #photo: URL
 
   constructor({ fullName, jobTitle, username, photoUrl }: ProfileDto) {
