@@ -4,11 +4,11 @@ import { useNavItemController } from '../../hooks/useNavItemController'
 import { Theme } from '..'
 import styles from './nav.module.css'
 
-type Props = PropsWithChildren &
+export type NavItemProps = PropsWithChildren &
   ComponentProps<typeof M3eNavItem> & {
     icon?: string
   }
-export const NavItem = ({ children, className, ...props }: Props) => {
+export const NavItem = ({ children, className, ...props }: NavItemProps) => {
   const { m3eNavItemRef, isSelected, onChangeHandler } = useNavItemController(props)
 
   const resolvedClassName =
