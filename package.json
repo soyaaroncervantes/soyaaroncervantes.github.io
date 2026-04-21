@@ -14,7 +14,8 @@
     "format": "bunx biome format --write ./src",
     "check": "bunx biome check --write ./src",
     "env:sync": "bun run scripts/sync-env.ts",
-    "prepare": "bun run env:sync && bunx simple-git-hooks"
+    "prepare": "bun run env:sync && bunx simple-git-hooks",
+    "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
     "@lit/react": "1.0.8",
@@ -50,7 +51,9 @@
     "simple-git-hooks": "2.13.1",
     "typescript": "6.0.2",
     "vite": "8.0.5",
-    "vitest": "4.1.2"
+    "vitest": "4.1.2",
+    "@inlang/paraglide-js": "^2.16.0",
+    "@inlang/cli": "^3.0.0"
   },
   "simple-git-hooks": {
     "pre-commit": "bunx biome check --write ./src"

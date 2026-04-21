@@ -1,3 +1,4 @@
+import { paraglideVitePlugin } from '@inlang/paraglide-js'
 import { defineConfig } from 'vite'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
@@ -8,7 +9,7 @@ export default defineConfig({
   server: {
     port: Number(process.env.VITE_APP_PORT) || 5173,
   },
-  plugins: [
+  plugins: [paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),
     tanstackRouter({
       target: 'react',
       routesDirectory: './src/core/routes',
