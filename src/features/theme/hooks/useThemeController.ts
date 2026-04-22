@@ -1,7 +1,7 @@
 import { useEffect, useEffectEvent } from 'react'
 import { type ThemeType, useThemeStore } from '../theme.stores'
 
-export const useTheme = () => {
+export const useThemeController = () => {
   const { theme, setScheme, setColor } = useThemeStore()
 
   const onColorSchemeChange = useEffectEvent((e: MediaQueryListEvent) => {

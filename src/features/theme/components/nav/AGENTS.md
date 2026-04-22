@@ -1,8 +1,9 @@
-# Nav Component Architecture
+# Agent Context — Nav Component
 
-## Overview
+> **Global patterns reference:** See `src/AGENTS.md` for ViewController and Compound component (Variant A — With Context) pattern definitions.
+> This component is a canonical example of both patterns.
 
-The `Nav` component implements a **context-based compound component** for managing navigation state and item selection using M3E (`@m3e/react/nav-bar`, `@m3e/react/nav-rail`, `@m3e/react/nav-menu`) components.
+The `Nav` component implements a **context-based compound component** (Variant A) for managing navigation state and item selection using M3E (`@m3e/react/nav-bar`, `@m3e/react/nav-rail`, `@m3e/react/nav-menu`) components.
 
 ## File Structure
 

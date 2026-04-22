@@ -1,12 +1,18 @@
-# Theme Components — Patterns & Conventions
+# Agent Context — Theme Components
 
-## Overview
+> **Global patterns reference:** See `src/AGENTS.md` for DTO, Model, ViewController, and Compound component pattern definitions.
 
-This directory contains all UI components for the theme feature. Components here are either:
+This document provides component-level conventions for `src/features/theme/components/`.
+
+---
+
+## Component Types
+
+Components in this directory are one of three types:
 
 1. **M3E wrappers** — thin wrappers around `@m3e/react/*` components
 2. **Native element wrappers** — wrappers around native HTML elements (`div`, etc.)
-3. **Compound components** — collections of related sub-components grouped under a single namespace (e.g., `Nav`, `Card`)
+3. **Compound components** — sub-components grouped under a single namespace (e.g., `Nav`, `Card`)
 
 ---
 
