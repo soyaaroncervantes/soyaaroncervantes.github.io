@@ -9,7 +9,7 @@ vi.mock('@m3e/react/card', () => ({
   ),
 }))
 
-import { ThemeCard, Card } from '@/features/theme/components/card/Card'
+import { Card, ThemeCard } from '@/features/theme/components/card/Card'
 import cardStyles from '@/features/theme/components/card/card.module.css'
 
 describe('ThemeCard', () => {

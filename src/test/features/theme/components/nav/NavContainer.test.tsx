@@ -15,9 +15,7 @@ describe('NavContainer', () => {
   })
 
   it('merges an external className with the base class', () => {
-    const { container } = render(
-      <NavContainer className="page-nav">items</NavContainer>,
-    )
+    const { container } = render(<NavContainer className="page-nav">items</NavContainer>)
     const el = container.firstChild as HTMLElement
     expect(el).toHaveClass(styles.container)
     expect(el).toHaveClass('page-nav')

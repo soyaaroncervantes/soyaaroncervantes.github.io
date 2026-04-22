@@ -25,7 +25,7 @@ const renderInNav = (props: React.ComponentProps<typeof NavItem> = {}) =>
   render(
     <Nav>
       <NavItem {...props}>Item label</NavItem>
-    </Nav>,
+    </Nav>
   )
 
 describe('NavItem', () => {

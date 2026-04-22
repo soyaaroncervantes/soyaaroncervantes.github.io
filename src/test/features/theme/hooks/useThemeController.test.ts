@@ -28,10 +28,7 @@ describe('useThemeController', () => {
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
     }
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue(mockMediaQuery),
-    )
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue(mockMediaQuery))
   })
 
   afterEach(() => {

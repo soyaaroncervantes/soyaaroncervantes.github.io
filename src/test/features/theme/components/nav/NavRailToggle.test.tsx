@@ -26,7 +26,7 @@ describe('NavRailToggle', () => {
     render(
       <NavRailToggle id="nav-toggle" aria-label="open nav">
         Toggle
-      </NavRailToggle>,
+      </NavRailToggle>
     )
     expect(screen.getByTestId('m3e-nav-rail-toggle')).toHaveAttribute('aria-label', 'open nav')
   })

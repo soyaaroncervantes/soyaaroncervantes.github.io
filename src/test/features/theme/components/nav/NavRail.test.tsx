@@ -22,7 +22,7 @@ const renderInNav = (id?: string, className?: string) =>
   render(
     <Nav id={id}>
       <NavRail className={className}>rail content</NavRail>
-    </Nav>,
+    </Nav>
   )
 
 describe('NavRail', () => {

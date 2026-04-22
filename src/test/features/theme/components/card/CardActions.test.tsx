@@ -15,7 +15,7 @@ describe('ThemeCardActions', () => {
 
   it('forwards className prop', () => {
     const { container } = render(
-      <ThemeCardActions className="custom-actions">actions</ThemeCardActions>,
+      <ThemeCardActions className="custom-actions">actions</ThemeCardActions>
     )
     expect(container.firstChild).toHaveClass('custom-actions')
   })

@@ -21,9 +21,7 @@ describe('ThemeCardContent', () => {
 
   it('forwards className prop', () => {
     // Arrange & Act
-    const { container } = render(
-      <ThemeCardContent className="custom-class">body</ThemeCardContent>,
-    )
+    const { container } = render(<ThemeCardContent className="custom-class">body</ThemeCardContent>)
 
     // Assert
     expect(container.firstChild).toHaveClass('custom-class')

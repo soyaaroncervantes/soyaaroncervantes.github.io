@@ -1,4 +1,4 @@
-import { render, screen, renderHook } from '@testing-library/react'
+import { render, renderHook, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { Nav, useNav } from '@/features/theme/components/nav/Nav'
 
@@ -32,9 +32,7 @@ describe('Nav', () => {
 describe('useNav', () => {
   it('throws when called outside a Nav component', () => {
     // Arrange & Act & Assert
-    expect(() => renderHook(() => useNav())).toThrow(
-      'useNav must be used within a Nav component',
-    )
+    expect(() => renderHook(() => useNav())).toThrow('useNav must be used within a Nav component')
   })
 
   it('returns context values when called inside a Nav', () => {

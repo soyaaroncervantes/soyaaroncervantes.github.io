@@ -15,7 +15,7 @@ describe('ThemeCardFooter', () => {
 
   it('forwards className prop', () => {
     const { container } = render(
-      <ThemeCardFooter className="custom-footer">footer</ThemeCardFooter>,
+      <ThemeCardFooter className="custom-footer">footer</ThemeCardFooter>
     )
     expect(container.firstChild).toHaveClass('custom-footer')
   })
