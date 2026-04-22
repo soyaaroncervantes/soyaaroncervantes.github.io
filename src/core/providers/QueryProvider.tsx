@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type { PropsWithChildren } from 'react'
 
 const queryClient = new QueryClient({
@@ -15,6 +16,8 @@ type Props = PropsWithChildren & {}
 export const QueryProvider = ({ children }: Props) => (
   <QueryClientProvider client={queryClient}>
     {children}
-    <ReactQueryDevtools initialIsOpen={false} />
+    <ReactQueryDevtools buttonPosition="top-left" initialIsOpen={false} />
+    <TanStackRouterDevtools position="top-left" initialIsOpen={false} />
   </QueryClientProvider>
 )
+ 

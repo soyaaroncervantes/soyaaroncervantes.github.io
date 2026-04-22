@@ -1,5 +1,4 @@
 import { createRootRoute, Outlet, redirect } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { shouldRedirect } from '@/paraglide/runtime.js'
 import { AppProvider } from '../providers/AppProvider'
 
@@ -13,7 +12,6 @@ export const Route = createRootRoute({
   component: () => (
     <AppProvider>
       <Outlet />
-      <TanStackRouterDevtools initialIsOpen={false} />
     </AppProvider>
   ),
 })
