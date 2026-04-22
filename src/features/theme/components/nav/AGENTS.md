@@ -36,7 +36,7 @@ Nav.Container = NavContainer
 **Usage:**
 ```tsx
 <Nav id="nav">
-  <Nav.Rail className={styles.nav}>
+  <Nav.Rail className={styles.base}>
     <Nav.Container className={styles.container}>
       <Nav.Item disabled />
       <Nav.Group>
@@ -143,7 +143,7 @@ export const NavRail = ({ children, className, ...props }: Props) => {
     <M3eNavRail
       {...props}
       id={id}
-      className={[styles.nav, styles.rail, className].filter(Boolean).join(' ')}
+      className={[styles.base, className].filter(Boolean).join(' ')}
     >
       {children}
     </M3eNavRail>
@@ -151,11 +151,9 @@ export const NavRail = ({ children, className, ...props }: Props) => {
 }
 ```
 
-- Always applies `styles.nav` (CSS custom properties for M3E theming) and `styles.rail`
+- Always applies `styles.base` (CSS custom properties for M3E theming)
 - `className` from props is appended — enables page-level CSS overrides
 - `id` from context links the rail to its toggle (`NavRailToggle`)
-
-> Note: `nav.module.css` does not define `.rail`. It is referenced but not declared — verify if it should be added.
 
 ---
 
