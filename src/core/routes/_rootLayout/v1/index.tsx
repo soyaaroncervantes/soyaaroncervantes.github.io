@@ -44,19 +44,15 @@ function V1Page() {
                   <Profile.JobTitle />
                 </Card.Content>
                 <Card.Footer className={profileStyles.footer}>
-                  <M3eIconButton href="https://github.com/soyaaroncervantes" target="_blank">
-                    <div className={profileStyles.media}>
-                      <svg aria-label="GitHub">
-                        <use href="/icons.svg#github" />
-                      </svg>
-                    </div>
+                  <M3eIconButton
+                    size="small"
+                    href="https://github.com/soyaaroncervantes"
+                    target="_blank"
+                  >
+                    <Theme.Svg id="github" aria-label="GitHub" />
                   </M3eIconButton>
                   <M3eIconButton href="https://linkedin.com/in/soyaaroncervantes" target="_blank">
-                    <div className={profileStyles.media}>
-                      <svg aria-label="LinkedIn">
-                        <use href="/icons.svg#linkedin" />
-                      </svg>
-                    </div>
+                    <Theme.Svg id="linkedin" aria-label="LinkedIn" />
                   </M3eIconButton>
                 </Card.Footer>
               </div>
