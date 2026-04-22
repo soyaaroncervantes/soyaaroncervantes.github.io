@@ -1,6 +1,21 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+vi.mock('@m3e/react/nav-menu', () => ({
+  M3eNavMenuItemGroup: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <div data-testid="m3e-nav-menu-item-group" {...props}>{children}</div>
+  ),
+}))
+
+vi.mock('@m3e/react/nav-rail', () => ({
+  M3eNavRail: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <div data-testid="m3e-nav-rail" {...props}>{children}</div>
+  ),
+  M3eNavRailToggle: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <button data-testid="m3e-nav-rail-toggle" {...props}>{children}</button>
+  ),
+}))
+
 vi.mock('@m3e/react/nav-bar', () => ({
   M3eNavItem: ({ children, className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <div data-testid="m3e-nav-item" className={className} {...props}>
