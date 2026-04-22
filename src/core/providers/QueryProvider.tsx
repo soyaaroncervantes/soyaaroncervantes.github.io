@@ -20,4 +20,3 @@ export const QueryProvider = ({ children }: Props) => (
     <TanStackRouterDevtools position="top-left" initialIsOpen={false} />
   </QueryClientProvider>
 )
- 

@@ -19,6 +19,31 @@ Already configured in `vitest.config.ts` + `src/test/setup.ts`. No extra setup n
 
 ---
 
+## Running Tests
+
+**Important:** Use `bun run test -- --run` to execute tests with Vitest (not Bun's native test runner).
+
+```bash
+# Run all tests once (non-watch mode)
+bun run test -- --run
+
+# Run specific test file
+bun run test -- --run src/test/features/theme/components/Svg.test.tsx
+
+# Run tests in watch mode
+bun run test
+
+# Run with UI
+bun run test:ui
+
+# Run with coverage
+bun run test:coverage
+```
+
+**Why `-- --run`?** The `bun run test` command without `--run` enters watch mode. The `-- --run` flags pass the `--run` argument to Vitest, ensuring it runs once and exits. Without this, tests run with Bun's native test runner instead of Vitest, which may cause module resolution issues.
+
+---
+
 ## Testing Pyramid for This Project
 
 ```
