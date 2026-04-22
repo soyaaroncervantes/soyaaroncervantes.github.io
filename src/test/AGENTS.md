@@ -40,38 +40,54 @@ Already configured in `vitest.config.ts` + `src/test/setup.ts`. No extra setup n
 
 ## File Structure Convention
 
-Tests live **co-located** with their source file. Shared helpers live in `src/test/`.
+`src/test/` **mirrors the directory structure of `src/`**. Each test file lives under `src/test/` at the same relative path as its source file.
 
 ```
-src/
-  features/
-    profile/
-      models/
-        profile.model.ts
-        profile.model.test.ts      ← unit test (co-located)
-      components/
-        Name.tsx
-        Name.test.tsx              ← component test (co-located)
-        Photo.test.tsx
-        JobTitle.test.tsx
-    theme/
-      hooks/
-        useThemeController.test.ts
-        useNavItemController.test.ts
+src/                                          src/test/
+  features/                                     features/
+    profile/                                      profile/
+      models/                                       models/
+        profile.model.ts              →               profile.model.test.ts
+      components/                                   components/
+        Name.tsx                      →               Name.test.tsx
+        Photo.tsx                     →               Photo.test.tsx
+        JobTitle.tsx                  →               JobTitle.test.tsx
+    theme/                                        theme/
+      components/                                   components/
+        Button.tsx                    →               Button.test.tsx
+        Icon.tsx                      →               Icon.test.tsx
+        Text.tsx                      →               Text.test.tsx
+        card/                                         card/
+          Card.tsx                    →                 Card.test.tsx
+          CardContent.tsx             →                 CardContent.test.tsx
+          CardFooter.tsx              →                 CardFooter.test.tsx
+          CardActions.tsx             →                 CardActions.test.tsx
+          CardHeader.tsx              →                 CardHeader.test.tsx
+        nav/                                          nav/
+          Nav.tsx                     →                 Nav.test.tsx
+          NavRail.tsx                 →                 NavRail.test.tsx
+          NavItem.tsx                 →                 NavItem.test.tsx
+          NavGroup.tsx                →                 NavGroup.test.tsx
+          NavContainer.tsx            →                 NavContainer.test.tsx
+          NavRailToggle.tsx           →                 NavRailToggle.test.tsx
+      hooks/                                        hooks/
+        useNavItemController.ts       →               useNavItemController.test.ts
+        useThemeController.ts         →               useThemeController.test.ts
+      usePreferredColorScheme.ts      →             usePreferredColorScheme.test.ts
   test/
     mothers/
-      profile.mother.ts            ← ProfileMother (Object Mother pattern)
+      profile.mother.ts              ← Object Mothers (shared fixtures)
     utils/
-      render.tsx                   ← renderWithProviders (Custom Render)
-    setup.ts                       ← jest-dom setup (auto-imported by Vitest)
-    AGENTS.md                      ← this file
+      render.tsx                     ← Custom render helpers
+    setup.ts                         ← jest-dom setup (auto-imported by Vitest)
+    AGENTS.md                        ← this file
 ```
 
 **Rules:**
-- Unit tests for a class/function → `*.test.ts` next to the source file
-- Component tests → `*.test.tsx` next to the component file
-- Shared factories and helpers → `src/test/mothers/` and `src/test/utils/`
-- Never put individual unit/component tests inside `src/test/` — that folder is for shared infrastructure only
+- Every test file path under `src/test/` mirrors its source path under `src/`
+- `src/test/mothers/` and `src/test/utils/` are the only exceptions — they are shared infrastructure, not mirrored source files
+- Never place test files inside `src/` next to source files
+- Import source files using `@/` absolute paths (e.g. `@/features/profile/models/profile.model`)
 
 ---
 
@@ -177,7 +193,7 @@ export function renderWithProfile(ui: ReactElement, { model = ProfileMother.vali
 ```tsx
 import { screen } from '@testing-library/react'
 import { renderWithProfile } from '@/test/utils/render'
-import { ProfileName } from '../Name'
+import { ProfileName } from '@/features/profile/components/Name'
 
 it('renders the full name from model', () => {
   // Arrange
