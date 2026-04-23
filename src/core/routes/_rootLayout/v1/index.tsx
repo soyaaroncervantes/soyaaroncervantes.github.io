@@ -3,6 +3,7 @@ import { Layout } from '@/core/layouts/Layout'
 import { userModel } from '@/features/profile/models/user.model'
 import { Profile } from '@/features/profile/Provider'
 import { Theme } from '@/features/theme/components'
+import { Button } from '@/features/theme/components/button/Button'
 import { Card } from '@/features/theme/components/card/Card'
 import { Nav } from '@/features/theme/components/nav/Nav'
 import profileStyles from './profile.module.css'
@@ -43,19 +44,16 @@ function V1Page() {
                   <Profile.JobTitle />
                 </Card.Content>
                 <Card.Footer className={profileStyles.footer}>
-                  <Theme.IconButton
+                  <Button.Icon
                     size="small"
                     href="https://github.com/soyaaroncervantes"
                     target="_blank"
                   >
                     <Theme.Svg id="github" aria-label="GitHub" />
-                  </Theme.IconButton>
-                  <Theme.IconButton
-                    href="https://linkedin.com/in/soyaaroncervantes"
-                    target="_blank"
-                  >
+                  </Button.Icon>
+                  <Button.Icon href="https://linkedin.com/in/soyaaroncervantes" target="_blank">
                     <Theme.Svg id="linkedin" aria-label="LinkedIn" />
-                  </Theme.IconButton>
+                  </Button.Icon>
                 </Card.Footer>
               </div>
             </Card>
