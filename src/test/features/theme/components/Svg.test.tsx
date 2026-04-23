@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { ThemeSvg } from '@/features/theme/components/Svg'
+import { Icon } from '@/features/theme/components/icon/Icon'
 
-describe('ThemeSvg', () => {
+describe('Icon.Svg', () => {
   it('renders use element with default href and id', () => {
     // Arrange & Act
-    render(<ThemeSvg id="github" data-testid="svg-github" />)
+    render(<Icon.Svg id="github" data-testid="svg-github" />)
 
     // Assert
     const svg = screen.getByTestId('svg-github')
@@ -15,7 +15,7 @@ describe('ThemeSvg', () => {
 
   it('renders use element with custom href', () => {
     // Arrange & Act
-    render(<ThemeSvg id="linkedin" href="/custom-icons.svg" data-testid="svg-linkedin" />)
+    render(<Icon.Svg id="linkedin" href="/custom-icons.svg" data-testid="svg-linkedin" />)
 
     // Assert
     const svg = screen.getByTestId('svg-linkedin')
@@ -25,7 +25,7 @@ describe('ThemeSvg', () => {
 
   it('applies color style when provided', () => {
     // Arrange & Act
-    render(<ThemeSvg id="github" color="red" data-testid="svg-colored" />)
+    render(<Icon.Svg id="github" color="red" data-testid="svg-colored" />)
 
     // Assert
     const svg = screen.getByTestId('svg-colored')
@@ -35,7 +35,7 @@ describe('ThemeSvg', () => {
   it('propagates aria-label and other standard SVG props', () => {
     // Arrange & Act
     render(
-      <ThemeSvg
+      <Icon.Svg
         id="github"
         aria-label="GitHub Icon"
         data-testid="svg-custom"

@@ -9,21 +9,21 @@ vi.mock('@m3e/react/icon', () => ({
   ),
 }))
 
-import { ThemeIcon } from '@/features/theme/components/Icon'
+import { Icon } from '@/features/theme/components/icon/Icon'
 
-describe('ThemeIcon', () => {
+describe('Icon', () => {
   it('renders children', () => {
-    render(<ThemeIcon>person</ThemeIcon>)
+    render(<Icon>person</Icon>)
     expect(screen.getByText('person')).toBeInTheDocument()
   })
 
   it('forwards props to the M3E icon', () => {
-    render(<ThemeIcon aria-label="user icon">person</ThemeIcon>)
+    render(<Icon aria-label="user icon">person</Icon>)
     expect(screen.getByTestId('m3e-icon')).toHaveAttribute('aria-label', 'user icon')
   })
 
   it('forwards className prop', () => {
-    render(<ThemeIcon className="icon-sm">person</ThemeIcon>)
+    render(<Icon className="icon-sm">person</Icon>)
     expect(screen.getByTestId('m3e-icon')).toHaveClass('icon-sm')
   })
 })

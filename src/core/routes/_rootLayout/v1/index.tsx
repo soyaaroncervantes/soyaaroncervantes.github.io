@@ -5,6 +5,7 @@ import { Profile } from '@/features/profile/Provider'
 import { Theme } from '@/features/theme/components'
 import { Button } from '@/features/theme/components/button/Button'
 import { Card } from '@/features/theme/components/card/Card'
+import { Icon } from '@/features/theme/components/icon/Icon'
 import { Nav } from '@/features/theme/components/nav/Nav'
 import profileStyles from './profile.module.css'
 import styles from './v1.module.css'
@@ -49,10 +50,10 @@ function V1Page() {
                     href="https://github.com/soyaaroncervantes"
                     target="_blank"
                   >
-                    <Theme.Svg id="github" aria-label="GitHub" />
+                    <Icon.Svg id="github" aria-label="GitHub" />
                   </Button.Icon>
                   <Button.Icon href="https://linkedin.com/in/soyaaroncervantes" target="_blank">
-                    <Theme.Svg id="linkedin" aria-label="LinkedIn" />
+                    <Icon.Svg id="linkedin" aria-label="LinkedIn" />
                   </Button.Icon>
                 </Card.Footer>
               </div>
