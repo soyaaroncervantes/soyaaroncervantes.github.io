@@ -1,4 +1,3 @@
-import { M3eIconButton } from '@m3e/react/icon-button'
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '@/core/layouts/Layout'
 import { userModel } from '@/features/profile/models/user.model'
@@ -35,25 +34,28 @@ function V1Page() {
         <section className={styles.profile}>
           <Profile model={userModel}>
             <Card className={profileStyles.card} color="secondary">
-              <div slot="header" className={profileStyles.header}>
+              <Card.Header className={profileStyles.header}>
                 <Profile.Photo className={profileStyles.img} />
-              </div>
+              </Card.Header>
               <div className={profileStyles.container}>
                 <Card.Content className={profileStyles.content}>
                   <Profile.Name variant="headline" size="large" />
                   <Profile.JobTitle />
                 </Card.Content>
                 <Card.Footer className={profileStyles.footer}>
-                  <M3eIconButton
+                  <Theme.IconButton
                     size="small"
                     href="https://github.com/soyaaroncervantes"
                     target="_blank"
                   >
                     <Theme.Svg id="github" aria-label="GitHub" />
-                  </M3eIconButton>
-                  <M3eIconButton href="https://linkedin.com/in/soyaaroncervantes" target="_blank">
+                  </Theme.IconButton>
+                  <Theme.IconButton
+                    href="https://linkedin.com/in/soyaaroncervantes"
+                    target="_blank"
+                  >
                     <Theme.Svg id="linkedin" aria-label="LinkedIn" />
-                  </M3eIconButton>
+                  </Theme.IconButton>
                 </Card.Footer>
               </div>
             </Card>
