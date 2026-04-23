@@ -10,9 +10,9 @@ This document provides component-level conventions for `src/features/theme/compo
 
 Components in this directory are one of three types:
 
-1. **M3E wrappers** — thin wrappers around `@m3e/react/*` components
-2. **Native element wrappers** — wrappers around native HTML elements (`div`, etc.)
-3. **Compound components** — sub-components grouped under a single namespace (e.g., `Nav`, `Card`)
+1. **Simple M3E wrapper** — thin wrapper around a single `@m3e/react/*` component (e.g., `Text.tsx`)
+2. **Compound without Context** — root component + independent sub-components grouped under a namespace (e.g., `Card`, `Button`)
+3. **Compound with Context** — root component + context-aware sub-components that share state (e.g., `Nav`)
 
 ---
 
@@ -100,50 +100,158 @@ const resolvedClassName = [disabled && styles.disabled, className].filter(Boolea
 
 ---
 
-### 5. Compound Components
+### 5. Type Registration Pattern (for Compounds)
 
-Group related sub-components under a single namespace using property assignment.
+When creating a compound component, register sub-components as properties using TypeScript's `as` operator with intersection types.
+
+```tsx
+// Root component
+export const ThemeCard = ({ children, ...props }: ThemeCardProps) => (
+  <M3eCard {...props}>{children}</M3eCard>
+)
+
+// Type registration: cast root to itself + object with sub-component types
+export const Card = ThemeCard as typeof ThemeCard & {
+  Content: typeof ThemeCardContent
+  Footer: typeof ThemeCardFooter
+  Header: typeof ThemeCardHeader
+  Actions: typeof ThemeCardActions
+}
+
+// Register sub-components as properties
+Card.Content = ThemeCardContent
+Card.Footer = ThemeCardFooter
+Card.Header = ThemeCardHeader
+Card.Actions = ThemeCardActions
+```
+
+**Key rules:**
+- Root component is always `ThemeXxx` (internal naming)
+- Exported compound is `Xxx` (public API)
+- Type registration uses `as typeof ThemeXxx & { Sub: typeof ThemeSub }`
+- Each sub-component is registered as a property: `Xxx.Sub = ThemeSub`
+- TypeScript now knows `<Xxx.Sub>` is valid and has the correct props
+
+**Why this pattern:**
+- Provides IDE autocomplete for `Xxx.Sub`
+- Enforces type safety — invalid sub-component names are caught at compile time
+- Allows importing only the root: `import { Card } from './card/Card'` — all subs are accessed via dot notation
+
+---
+
+### 6. Compound Components — Two Variants
+
+#### Variant A: Without Context (e.g., `Card`, `Button`, `Icon`)
+
+Sub-components are **independent wrappers** with no shared state. Use when sub-components only project content or wrap elements without needing to communicate.
+
+```tsx
+// Card.tsx
+export const ThemeCard = ({ children, ...props }: ThemeCardProps) => (
+  <M3eCard {...props}>{children}</M3eCard>
+)
+
+export const Card = ThemeCard as typeof ThemeCard & {
+  Content: typeof ThemeCardContent
+  Footer: typeof ThemeCardFooter
+  Header: typeof ThemeCardHeader
+  Actions: typeof ThemeCardActions
+}
+
+Card.Content = ThemeCardContent
+Card.Footer = ThemeCardFooter
+Card.Header = ThemeCardHeader
+Card.Actions = ThemeCardActions
+```
+
+**Usage:**
+```tsx
+<Card>
+  <Card.Header>Title</Card.Header>
+  <Card.Content>Content here</Card.Content>
+  <Card.Footer>Footer</Card.Footer>
+  <Card.Actions>Actions</Card.Actions>
+</Card>
+```
+
+**When to use:**
+- Sub-components are slot wrappers or simple element wrappers
+- No shared state between sub-components
+- No need for context or hooks in sub-components
+
+---
+
+#### Variant B: With Context (e.g., `Nav`)
+
+Sub-components are **context-aware** and share state managed by the root component. Use when sub-components need to communicate or track shared state (e.g., selection, open/closed state).
 
 ```tsx
 // Nav.tsx
-import { NavContainer } from './NavContainer'
-import { NavGroup } from './NavGroup'
-import { NavItem } from './NavItem'
-import { NavRail } from './NavRail'
+const NavContext = createContext<Nullable<NavContextInternalType>>(null)
 
-export const Nav = ({ children, ...props }: Props) => (
-  <NavContext.Provider value={...}>{children}</NavContext.Provider>
-)
+export const Nav = ({ children, id, isOpen }: Props) => {
+  const [item, setNavItem] = useState<Nullable<M3eNavItemElement>>(null)
+  const onSelected = useCallback((element: M3eNavItemElement) => {
+    setNavItem(element)
+  }, [])
+
+  return (
+    <NavContext.Provider value={{ isOpen, id, item, onSelected }}>
+      {children}
+    </NavContext.Provider>
+  )
+}
+
+export const useNav = (): NavContextInternalType => {
+  const context = use(NavContext)
+  if (!context) throw new Error('useNav must be used within a Nav component')
+  return context
+}
+
+export const Nav = Nav as typeof Nav & {
+  Rail: typeof NavRail
+  Item: typeof NavItem
+  Toggle: typeof NavRailToggle
+  Group: typeof NavGroup
+  Container: typeof NavContainer
+}
 
 Nav.Rail = NavRail
 Nav.Item = NavItem
+Nav.Toggle = NavRailToggle
 Nav.Group = NavGroup
 Nav.Container = NavContainer
 ```
 
-**Usage at call site:**
+**Usage:**
 ```tsx
-<Nav>
+<Nav id="nav">
   <Nav.Rail>
     <Nav.Container>
       <Nav.Item disabled />
       <Nav.Group>
         <Nav.Item icon="person" selected />
+        <Nav.Item icon="email" />
       </Nav.Group>
     </Nav.Container>
   </Nav.Rail>
 </Nav>
 ```
 
+**When to use:**
+- Sub-components need to share state (selection, visibility, etc.)
+- Sub-components need to communicate with each other
+- Root component manages complex logic via Context
+
 **Rules:**
-- The root component manages shared state via React Context
-- Sub-components are registered as properties of the root component
-- Sub-components access shared state via a context hook (e.g., `useNav()`) — never via direct prop drilling
-- Keep the public context type stable; internal handlers go in a separate unexported type
+- Define `ContextType` (public) and `ContextInternalType` (internal with handlers)
+- Create `useXxx()` hook that throws if called outside root
+- Sub-components call `useXxx()` internally — never receive state via props
+- Keep public context type stable; extend internally with handlers
 
 ---
 
-### 6. Extending Props (Adding Custom Props)
+### 7. Extending Props (Adding Custom Props)
 
 When a component needs custom props beyond what M3E or HTML provides, add them explicitly:
 
@@ -155,7 +263,7 @@ type Props = PropsWithChildren &
 
 export const NavItem = ({ children, icon, ...props }: Props) => (
   <M3eNavItem {...props}>
-    {icon && <Theme.Icon slot="icon" name={icon} />}
+    {icon && <span slot="icon">{icon}</span>}
     {children}
   </M3eNavItem>
 )
@@ -167,7 +275,7 @@ export const NavItem = ({ children, icon, ...props }: Props) => (
 
 ---
 
-### 7. CSS Module Usage
+### 8. CSS Module Usage
 
 Each component directory may have a `*.module.css` file with base classes.
 
@@ -187,7 +295,7 @@ nav/
 
 ---
 
-### 8. ViewController Hook (MVVM-inspired)
+### 9. ViewController Hook (MVVM-inspired)
 
 When a component has non-trivial logic (refs, effects, event handlers, context interaction), extract it to a **ViewController hook**. The component becomes pure UI.
 
@@ -255,7 +363,7 @@ export const NavItem = ({ children, className, ...props }: Props) => {
 
   return (
     <M3eNavItem {...props} selected={isSelected} ref={m3eNavItemRef} onChange={onChangeHandler} className={resolvedClassName}>
-      {props.icon && <Theme.Icon slot="icon" name={props.icon} />}
+      {props.icon && <span slot="icon">{props.icon}</span>}
       {children}
     </M3eNavItem>
   )

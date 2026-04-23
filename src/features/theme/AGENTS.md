@@ -13,9 +13,9 @@ src/features/theme/
   components/
     index.ts          — Theme namespace export (Theme.Card, Theme.Text, etc.)
     Button.tsx        — M3E wrapper
-    Icon.tsx          — M3E wrapper
     Text.tsx          — M3E wrapper
     card/             — Compound without Context (see card/AGENTS.md)
+    icon/             — Icon wrapper components (see icon/AGENTS.md)
     nav/              — Compound with Context (see nav/AGENTS.md)
     AGENTS.md         — Component-level conventions and patterns
   hooks/
@@ -33,21 +33,19 @@ All components are exported from `components/index.ts` under a single `Theme` ob
 
 ```ts
 import { Theme } from '@/features/theme/components'
+import { Icon } from '@/features/theme/components/icon/Icon'
 
 <Theme.Card>...</Theme.Card>
 <Theme.Card.Header>...</Theme.Card.Header>
 <Theme.Card.Content>...</Theme.Card.Content>
 <Theme.Text variant="body">Hello</Theme.Text>
-<Theme.Icon name="person" />
-<Theme.Button>Click</Theme.Button>
+<Icon.Svg id="github" />
 ```
 
 **Current exports:**
-- `Theme.Card` — compound without Context (`Card`, `Card.Header`, `Card.Content`, `Card.Footer`, `Card.Actions`)
+- `Theme.Card` — compound without Context (`Card.Header`, `Card.Content`, `Card.Footer`, `Card.Actions`)
 - `Theme.Text` — M3E heading wrapper
-- `Theme.Icon` — M3E icon wrapper
-- `Theme.Button` — M3E button wrapper
-- `Theme.Nav` — compound with Context (`Nav.Rail`, `Nav.Item`, `Nav.Group`, `Nav.Container`, `Nav.Toggle`)
+- `Icon` — compound without Context, imported directly from `icon/Icon` (`Icon.Svg`)
 
 ---
 
@@ -94,6 +92,7 @@ The active color scheme (light/dark) and accent color are managed in `theme.stor
 ## References
 
 - `components/AGENTS.md` — detailed component patterns (M3E wrapper, native wrapper, CSS merge, ViewController)
+- `components/icon/AGENTS.md` — Icon wrapper component architecture
 - `components/nav/AGENTS.md` — Nav compound with Context architecture
 - `components/card/AGENTS.md` — Card compound without Context architecture
 - `hooks/AGENTS.md` — ViewController hook conventions and examples
