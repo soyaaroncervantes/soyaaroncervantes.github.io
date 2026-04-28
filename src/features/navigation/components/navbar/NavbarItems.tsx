@@ -34,7 +34,7 @@ export const NavbarItems = ({ overrides }: NavbarItemsProps = {}) => {
 
         // Caso 2: Spacer (itemsSet es null)
         if (itemsSet === null) {
-          return <Nav.Item key={`group-${groupId}`} slot={`group-${groupId}`} disabled />
+          return <Nav.Item key={`group-${groupId}`} disabled />
         }
 
         // Caso 3: Grupo con items (default rendering)
@@ -44,14 +44,14 @@ export const NavbarItems = ({ overrides }: NavbarItemsProps = {}) => {
         }
 
         return (
-          <Nav.Group key={`group-${groupId}`} slot={`group-${groupId}`}>
+          <Nav.Group key={`group-${groupId}`}>
             {Array.from(itemsSet).map((model) => (
               <Nav.Item
                 key={`item-${model.id}`}
-                slot={`item-${model.id}`}
                 icon={model.icon}
                 selected={model === activeItem}
-                onClick={() => navigate({ to: model.to })}
+                onClick={() => model.to && navigate({ to: model.to })}
+                href={model.url ? new URL(model.url).href : undefined}
               />
             ))}
           </Nav.Group>

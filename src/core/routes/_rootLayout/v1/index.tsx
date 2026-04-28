@@ -7,7 +7,7 @@ import { Theme } from '@/features/theme/components'
 import { Button } from '@/features/theme/components/button/Button'
 import { Card } from '@/features/theme/components/card/Card'
 import { Icon } from '@/features/theme/components/icon/Icon'
-import { navigation } from './navigation'
+import { navigation } from './-navigation'
 import profileStyles from './profile.module.css'
 import styles from './v1.module.css'
 
