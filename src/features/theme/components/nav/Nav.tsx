@@ -20,12 +20,12 @@ type NavContextInternalType = NavContextType & {
 
 const NavContext = createContext<Nullable<NavContextInternalType>>(null)
 
-type Props = PropsWithChildren & {
+export type ThemeNavProps = PropsWithChildren & {
   id?: string
   isOpen?: boolean
 }
 
-export const Nav = ({ children, id, isOpen }: Props) => {
+export const Nav = ({ children, id, isOpen }: ThemeNavProps) => {
   const [item, setNavItem] = useState<Nullable<M3eNavItemElement>>(null)
 
   const onSelected = useCallback((element: M3eNavItemElement) => {

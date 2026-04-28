@@ -6,7 +6,8 @@ import { Theme } from '@/features/theme/components'
 import { Button } from '@/features/theme/components/button/Button'
 import { Card } from '@/features/theme/components/card/Card'
 import { Icon } from '@/features/theme/components/icon/Icon'
-import { Nav } from '@/features/theme/components/nav/Nav'
+import { Navbar } from '@/features/navigation'
+import { navigation } from './navigation'
 import profileStyles from './profile.module.css'
 import styles from './v1.module.css'
 
@@ -17,21 +18,11 @@ export const Route = createFileRoute('/_rootLayout/v1/')({
 function V1Page() {
   return (
     <Layout.Screen>
-      <Nav id="nav">
-        <Nav.Rail className={styles.nav} color="primary">
-          <Nav.Container className={styles.container}>
-            <Nav.Item disabled />
-            <Nav.Group>
-              <Nav.Item icon="person" selected />
-              <Nav.Item icon="email" />
-            </Nav.Group>
-            <Nav.Group>
-              <Nav.Item icon="share" />
-              <Nav.Item icon="download" />
-            </Nav.Group>
-          </Nav.Container>
-        </Nav.Rail>
-      </Nav>
+      <Navbar id="nav" navigation={navigation}>
+        <Navbar.Layout className={styles.nav} color="primary">
+          <Navbar.Items />
+        </Navbar.Layout>
+      </Navbar>
       <Layout.Content className={styles.content}>
         <section className={styles.profile}>
           <Profile model={userModel}>
