@@ -9,9 +9,7 @@ type Props = PropsWithChildren & {
 export const NavbarLayout = ({ children, className, color }: Props) => {
   return (
     <Nav.Rail className={className} color={color}>
-      <Nav.Container>
-        {children}
-      </Nav.Container>
+      <Nav.Container>{children}</Nav.Container>
     </Nav.Rail>
   )
 }

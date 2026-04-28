@@ -3,12 +3,12 @@ import type { NavItemModel } from './models/NavItemModel'
 
 /**
  * Mapa de navegación que define grupos de items.
- * 
+ *
  * - Key: ID único del grupo (string)
- * - Value: 
+ * - Value:
  *   - null: Spacer/separator (renderiza Nav.Item disabled)
  *   - Set<NavItemModel>: Grupo con items (renderiza Nav.Group con Nav.Items)
- * 
+ *
  * @example
  * ```ts
  * const navigation: NavbarMap = new Map([

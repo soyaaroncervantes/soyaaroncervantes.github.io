@@ -1,10 +1,10 @@
 import type { ThemeNavProps } from '@/features/theme/components/nav/Nav'
 import { Nav } from '@/features/theme/components/nav/Nav'
-import type { NavbarMap } from '../../types'
 import { useNavbarController } from '../../hooks/useNavbarController'
+import type { NavbarMap } from '../../types'
 import { NavbarContext, type NavbarContextType } from './NavbarContext'
-import { NavbarLayout } from './NavbarLayout'
 import { NavbarItems } from './NavbarItems'
+import { NavbarLayout } from './NavbarLayout'
 
 export type NavbarProps = ThemeNavProps & {
   navigation: NavbarMap
@@ -15,18 +15,16 @@ export const Navbar = ({ children, id, isOpen, navigation }: NavbarProps) => {
   const { navigationEntries, activeItem } = useNavbarController(navigation)
 
   // 2. Crea el contexto de Navbar
-  const navbarContextValue: NavbarContextType = { 
-    navigation: navigationEntries,  // Ya transformado por el controller
-    activeItem 
+  const navbarContextValue: NavbarContextType = {
+    navigation: navigationEntries, // Ya transformado por el controller
+    activeItem,
   }
 
   // 3. Wrappea Nav (que tiene su propio contexto)
   // Reutiliza ThemeNavProps: id, isOpen
   return (
     <Nav id={id} isOpen={isOpen}>
-      <NavbarContext.Provider value={navbarContextValue}>
-        {children}
-      </NavbarContext.Provider>
+      <NavbarContext.Provider value={navbarContextValue}>{children}</NavbarContext.Provider>
     </Nav>
   )
 }
