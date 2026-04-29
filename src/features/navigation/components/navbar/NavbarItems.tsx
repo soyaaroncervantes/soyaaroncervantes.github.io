@@ -48,7 +48,7 @@ export const NavbarItems = ({ overrides }: NavbarItemsProps = {}) => {
             {Array.from(itemsSet).map((model) => (
               <Nav.Item
                 key={`item-${model.id}`}
-                icon={model.icon}
+                icon={model.canUseExternalIcon() ? model.icon : undefined}
                 selected={model === activeItem}
                 onClick={() => model.to && navigate({ to: model.to })}
                 href={model.url ? new URL(model.url).href : undefined}

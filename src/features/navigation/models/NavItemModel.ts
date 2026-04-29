@@ -1,14 +1,17 @@
+import type { Nullable } from '@/shared/base.types'
 import type { NavItemDto, NavRoute } from '../dtos/NavItemDto'
 
 export class NavItemModel {
   readonly #id: string
   readonly #icon: string
-  readonly #to: NavRoute
+  readonly #to: Nullable<NavRoute>
+  readonly #url: Nullable<URL>
 
-  constructor({ id, icon, to }: NavItemDto) {
+  constructor({ id, icon, to, url }: NavItemDto) {
     this.#id = id
     this.#icon = icon
-    this.#to = to
+    this.#to = to ?? null
+    this.#url = url ?? null
   }
 
   get id(): string {
@@ -19,7 +22,15 @@ export class NavItemModel {
     return this.#icon
   }
 
-  get to(): NavRoute {
+  get to(): Nullable<NavRoute> {
     return this.#to
+  }
+
+  get url(): Nullable<URL> {
+    return this.#url
+  }
+
+  canUseExternalIcon(): boolean {
+    return !!this.#url;
   }
 }

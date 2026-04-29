@@ -6,5 +6,6 @@ export type NavRoute = ValidateNavigateOptions<RegisteredRouter>['to']
 export type NavItemDto = {
   id: string // ID único — requerido para keys en React
   icon: string
-  to: NavRoute // solo rutas registradas, type-safe
+  to?: NavRoute // solo rutas registradas, type-safe
+  url?: URL // URL externa
 }

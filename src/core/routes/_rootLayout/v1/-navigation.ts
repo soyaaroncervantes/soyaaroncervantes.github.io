@@ -15,12 +15,12 @@ export const navigation: NavbarMap = new Map([
       new NavItemModel({
         id: 'nav-github',
         icon: 'github',
-        to: new URL('https://github.com/soyaaroncervantes'),
+        url: new URL('https://github.com/soyaaroncervantes'),
       }),
       new NavItemModel({
         id: 'nav-linkedin',
         icon: 'linkedin',
-        to: new URL('https://linkedin.com/in/soyaaroncervantes'),
+        url: new URL('https://linkedin.com/in/soyaaroncervantes'),
       }),
     ]),
   ],
