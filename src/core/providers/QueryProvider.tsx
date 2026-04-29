@@ -16,7 +16,7 @@ type Props = PropsWithChildren & {}
 export const QueryProvider = ({ children }: Props) => (
   <QueryClientProvider client={queryClient}>
     {children}
-    <ReactQueryDevtools buttonPosition="top-left" initialIsOpen={false} />
-    <TanStackRouterDevtools position="top-left" initialIsOpen={false} />
+    <ReactQueryDevtools buttonPosition="top-right" initialIsOpen={false} />
+    <TanStackRouterDevtools position="top-right" initialIsOpen={false} />
   </QueryClientProvider>
 )
