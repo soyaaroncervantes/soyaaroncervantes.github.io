@@ -1,8 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
 import { Fragment, type ReactNode } from 'react'
+import { Icon } from '@/features/theme/components/icon/Icon'
 import { Nav } from '@/features/theme/components/nav/Nav'
 import { useNavbarContext } from './NavbarContext'
-import { Icon } from '@/features/theme/components/icon/Icon';
 
 type NavbarItemsProps = {
   overrides?: Map<string, ReactNode>
