@@ -19,7 +19,7 @@ function V1Page() {
   return (
     <Layout.Screen>
       <Navbar id="nav" navigation={navigation}>
-        <Navbar.Layout className={styles.nav} color="primary">
+        <Navbar.Layout className={styles.nav} containerClassName={styles.container} color="primary">
           <Navbar.Items />
         </Navbar.Layout>
       </Navbar>

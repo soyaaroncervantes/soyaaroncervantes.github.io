@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { Fragment, type ReactNode } from 'react'
 import { Nav } from '@/features/theme/components/nav/Nav'
 import { useNavbarContext } from './NavbarContext'
+import { Icon } from '@/features/theme/components/icon/Icon';
 
 type NavbarItemsProps = {
   overrides?: Map<string, ReactNode>
@@ -48,11 +49,13 @@ export const NavbarItems = ({ overrides }: NavbarItemsProps = {}) => {
             {Array.from(itemsSet).map((model) => (
               <Nav.Item
                 key={`item-${model.id}`}
-                icon={model.canUseExternalIcon() ? model.icon : undefined}
+                icon={!model.canUseExternalIcon() ? model.icon : undefined}
                 selected={model === activeItem}
                 onClick={() => model.to && navigate({ to: model.to })}
                 href={model.url ? new URL(model.url).href : undefined}
-              />
+              >
+                {model.canUseExternalIcon() && <Icon.Svg id={model.icon} aria-label={model.id} />}
+              </Nav.Item>
             ))}
           </Nav.Group>
         )

@@ -14,13 +14,11 @@ export const navigation: NavbarMap = new Map([
     new Set([
       new NavItemModel({
         id: 'nav-github',
-        icon: 'github',
-        url: new URL('https://github.com/soyaaroncervantes'),
+        icon: 'share',
       }),
       new NavItemModel({
         id: 'nav-linkedin',
-        icon: 'linkedin',
-        url: new URL('https://linkedin.com/in/soyaaroncervantes'),
+        icon: 'download',
       }),
     ]),
   ],
