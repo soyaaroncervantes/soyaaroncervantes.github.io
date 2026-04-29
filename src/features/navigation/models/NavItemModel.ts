@@ -31,6 +31,6 @@ export class NavItemModel {
   }
 
   canUseExternalIcon(): boolean {
-    return !!this.#url;
+    return !!this.#url
   }
 }
