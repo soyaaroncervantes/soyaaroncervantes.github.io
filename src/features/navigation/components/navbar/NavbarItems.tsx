@@ -1,16 +1,33 @@
-import { useNavigate } from '@tanstack/react-router'
 import { Fragment, type ReactNode } from 'react'
 import { Icon } from '@/features/theme/components/icon/Icon'
 import { Nav } from '@/features/theme/components/nav/Nav'
+import type { NavItemProps } from '@/features/theme/components/nav/NavItem'
+import type { NavItemModel } from '../../models/NavItemModel'
 import { useNavbarContext } from './NavbarContext'
 
 type NavbarItemsProps = {
   overrides?: Map<string, ReactNode>
 }
 
+type ItemProps = NavItemProps & {
+  model: NavItemModel
+}
+const Item = ({ model, selected, ...props }: ItemProps) => {
+  return (
+    <Nav.Item
+      selected={selected}
+      {...props}
+      // onClick={() => model.to && navigate({ to: model.to })}
+      // href={model.url ? new URL(model.url).href : undefined}
+    >
+      {!model.canUseExternalIcon() && <Icon slot="icon" name={model.icon} />}
+      {model.canUseExternalIcon() && <Icon.Svg id={model.icon} aria-label={model.id} />}
+    </Nav.Item>
+  )
+}
+
 export const NavbarItems = ({ overrides }: NavbarItemsProps = {}) => {
   const { navigation, activeItem } = useNavbarContext()
-  const navigate = useNavigate()
 
   // Guard: Si navigation está vacío, no renderizar nada
   if (!navigation || navigation.length === 0) {
@@ -47,15 +64,7 @@ export const NavbarItems = ({ overrides }: NavbarItemsProps = {}) => {
         return (
           <Nav.Group key={`group-${groupId}`}>
             {Array.from(itemsSet).map((model) => (
-              <Nav.Item
-                key={`item-${model.id}`}
-                icon={!model.canUseExternalIcon() ? model.icon : undefined}
-                selected={model === activeItem}
-                onClick={() => model.to && navigate({ to: model.to })}
-                href={model.url ? new URL(model.url).href : undefined}
-              >
-                {model.canUseExternalIcon() && <Icon.Svg id={model.icon} aria-label={model.id} />}
-              </Nav.Item>
+              <Item key={`item-${model.id}`} model={model} selected={model === activeItem} />
             ))}
           </Nav.Group>
         )
