@@ -9,25 +9,50 @@ vi.mock('@m3e/react/icon', () => ({
   ),
 }))
 
-import { Icon } from '@/features/theme/components/icon/Icon'
+import { ThemeIcon } from '@/features/theme/components/icon/Icon'
 
-describe('Icon', () => {
-  it('renders children', () => {
-    render(<Icon>person</Icon>)
-    expect(screen.getByText('person')).toBeInTheDocument()
+describe('ThemeIcon', () => {
+  it('renders a material icon for non-sprite names', () => {
+    render(<ThemeIcon name="person" />)
+    expect(screen.getByTestId('m3e-icon')).toHaveAttribute('name', 'person')
+    expect(screen.getByTestId('m3e-icon')).toHaveTextContent('person')
   })
 
   it('forwards props to the M3E icon', () => {
-    render(<Icon aria-label="user icon">person</Icon>)
+    render(<ThemeIcon name="person" aria-label="user icon" />)
     expect(screen.getByTestId('m3e-icon')).toHaveAttribute('aria-label', 'user icon')
   })
 
   it('forwards className prop', () => {
-    render(<Icon className="icon-sm">person</Icon>)
+    render(<ThemeIcon name="person" className="icon-sm" />)
     expect(screen.getByTestId('m3e-icon')).toHaveClass('icon-sm')
   })
 
-  it('exposes Svg sub-component', () => {
-    expect(Icon.Svg).toBeDefined()
+  it('renders svg sprite for known sprite names', () => {
+    render(<ThemeIcon name="github" data-testid="sprite-icon" aria-label="GitHub Icon" />)
+
+    const svg = screen.getByTestId('sprite-icon')
+    const useElement = svg.querySelector('use')
+
+    expect(svg.tagName.toLowerCase()).toBe('svg')
+    expect(svg).toHaveAttribute('aria-label', 'GitHub Icon')
+    expect(useElement).toHaveAttribute('href', '/icons.svg#github')
+  })
+
+  it('uses custom spriteHref and forwards color style', () => {
+    render(
+      <ThemeIcon
+        name="linkedin"
+        spriteHref="/custom-icons.svg"
+        color="red"
+        data-testid="sprite-custom"
+      />
+    )
+
+    const svg = screen.getByTestId('sprite-custom')
+    const useElement = svg.querySelector('use')
+
+    expect(useElement).toHaveAttribute('href', '/custom-icons.svg#linkedin')
+    expect(svg).toHaveStyle({ color: 'rgb(255, 0, 0)' })
   })
 })

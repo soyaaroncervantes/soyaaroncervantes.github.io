@@ -21,6 +21,7 @@ Compound component (Variant A — With Context) that abstracts `Nav` from the th
 type NavbarContextType = {
   navigation: Array<[groupId: string, itemsSet: Nullable<Set<NavItemModel>>]>
   activeItem: NavItemModel | null
+  onActivate?: (model: NavItemModel) => void
 }
 ```
 
@@ -38,6 +39,7 @@ type NavbarContextType = {
 ```ts
 type NavbarProps = ThemeNavProps & {
   navigation: NavbarMap
+  onActivate?: (model: NavItemModel) => void
 }
 ```
 
@@ -78,6 +80,11 @@ type NavbarItemsProps = {
    - If `itemsSet === null` → renders spacer (`<Nav.Item disabled />`)
    - If `itemsSet !== null` → renders group with items
 4. Each element has unique `key` — React reconciles correctly
+
+`Item` is model-driven:
+- Spreads `model.toAnchorAttrs()` into `Nav.Item`
+- Delegates click handling to `model.onClick(event.nativeEvent, { navigate, onActivate })`
+- Never branches by model type in the component
 
 **Validations:**
 - Empty `navigation` → returns `null`

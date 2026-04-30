@@ -1,8 +1,10 @@
-import { useRouterState } from '@tanstack/react-router'
+import { useRouter, useRouterState } from '@tanstack/react-router'
 import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useNavbarController } from '../../hooks/useNavbarController'
+import type { NavItemAnchorAttrs, NavItemClickDeps } from '../../models/NavItemModel'
 import { NavItemModel } from '../../models/NavItemModel'
+import { RouteNavItemModel } from '../../models/RouteNavItemModel'
 import type { NavbarMap } from '../../types'
 
 vi.mock('@tanstack/react-router', () => ({
@@ -18,8 +20,28 @@ vi.mock('@tanstack/react-router', () => ({
 
 describe('useNavbarController', () => {
   let mockNavigation: NavbarMap
+  const preloadRoute = vi.fn()
+
+  class ProgrammaticOnlyNavItemModel extends NavItemModel {
+    constructor() {
+      super({ id: 'programmatic', icon: 'share' })
+    }
+
+    override toAnchorAttrs(): NavItemAnchorAttrs {
+      return {}
+    }
+
+    override onClick(_event: MouseEvent, _deps: NavItemClickDeps): void {
+      // no-op
+    }
+  }
 
   beforeEach(() => {
+    preloadRoute.mockReset()
+    vi.mocked(useRouter).mockReturnValue({
+      preloadRoute,
+    } as ReturnType<typeof useRouter>)
+
     vi.mocked(useRouterState).mockReturnValue({
       location: { pathname: '/v1' },
     } as ReturnType<typeof useRouterState>)
@@ -29,8 +51,9 @@ describe('useNavbarController', () => {
       [
         'main',
         new Set([
-          new NavItemModel({ id: 'nav-person', icon: 'person', to: '/v1' }),
-          new NavItemModel({ id: 'nav-v2', icon: 'email', to: '/v2' }),
+          new RouteNavItemModel({ id: 'nav-person', icon: 'person', to: '/v1' }),
+          new RouteNavItemModel({ id: 'nav-v2', icon: 'email', to: '/v2' }),
+          new ProgrammaticOnlyNavItemModel(),
         ]),
       ],
     ])
@@ -49,7 +72,8 @@ describe('useNavbarController', () => {
     const { result } = renderHook(() => useNavbarController(mockNavigation))
 
     expect(result.current.activeItem).not.toBeNull()
-    expect(result.current.activeItem?.to).toBe('/v1')
+    expect(result.current.activeItem).toBeInstanceOf(RouteNavItemModel)
+    expect((result.current.activeItem as RouteNavItemModel).to).toBe('/v1')
     expect(result.current.activeItem?.id).toBe('nav-person')
   })
 
@@ -77,5 +101,13 @@ describe('useNavbarController', () => {
 
     expect(result.current.navigationEntries).toHaveLength(1)
     expect(result.current.navigationEntries[0][1]?.size).toBe(0)
+  })
+
+  it('preloads only RouteNavItemModel instances', () => {
+    renderHook(() => useNavbarController(mockNavigation))
+
+    expect(preloadRoute).toHaveBeenCalledTimes(2)
+    expect(preloadRoute).toHaveBeenCalledWith({ to: '/v1' })
+    expect(preloadRoute).toHaveBeenCalledWith({ to: '/v2' })
   })
 })

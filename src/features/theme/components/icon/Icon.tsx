@@ -1,15 +1,22 @@
 import { M3eIcon } from '@m3e/react/icon'
-import type { ComponentProps, PropsWithChildren } from 'react'
-import { ThemeIconSvg } from './Svg'
+import type { ComponentProps } from 'react'
+import { isSpriteIcon } from './registry'
 
-export type ThemeIconProps = PropsWithChildren & ComponentProps<typeof M3eIcon>
-
-export const ThemeIcon = ({ children, ...props }: ThemeIconProps) => {
-  return <M3eIcon {...props}>{children}</M3eIcon>
+export type ThemeIconProps = Omit<ComponentProps<typeof M3eIcon>, 'name'> & {
+  name: string
+  spriteHref?: string
+  color?: string
 }
 
-export const Icon = ThemeIcon as typeof ThemeIcon & {
-  Svg: typeof ThemeIconSvg
-}
+export const ThemeIcon = ({ name, spriteHref = '/icons.svg', color, ...props }: ThemeIconProps) => {
+  if (isSpriteIcon(name)) {
+    return (
+      // biome-ignore lint/a11y/noSvgWithoutTitle: aria-label is forwarded via props
+      <svg style={{ color }} {...props}>
+        <use href={`${spriteHref}#${name}`} />
+      </svg>
+    )
+  }
 
-Icon.Svg = ThemeIconSvg
+  return <M3eIcon {...props} name={name}>{name}</M3eIcon>
+}

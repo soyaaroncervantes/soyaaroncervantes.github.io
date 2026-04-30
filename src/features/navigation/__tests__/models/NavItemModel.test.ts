@@ -1,17 +1,31 @@
 import { describe, expect, it } from 'vitest'
+import type { NavItemAnchorAttrs, NavItemClickDeps } from '../../models/NavItemModel'
 import { NavItemModel } from '../../models/NavItemModel'
 
 describe('NavItemModel', () => {
-  it('constructs a model with id, icon and to', () => {
-    const model = new NavItemModel({ id: 'nav-person', icon: 'person', to: '/v1' })
+  class TestNavItemModel extends NavItemModel {
+    static parseForTest(input: string | URL): URL {
+      return TestNavItemModel.parseUrl(input)
+    }
+
+    override toAnchorAttrs(): NavItemAnchorAttrs {
+      return {}
+    }
+
+    override onClick(_event: MouseEvent, _deps: NavItemClickDeps): void {
+      // no-op
+    }
+  }
+
+  it('constructs a model with id and icon', () => {
+    const model = new TestNavItemModel({ id: 'nav-person', icon: 'person' })
 
     expect(model.id).toBe('nav-person')
     expect(model.icon).toBe('person')
-    expect(model.to).toBe('/v1')
   })
 
   it('has readonly getters', () => {
-    const model = new NavItemModel({ id: 'nav-person', icon: 'person', to: '/v1' })
+    const model = new TestNavItemModel({ id: 'nav-person', icon: 'person' })
 
     // @ts-expect-error — no setter
     expect(() => {
@@ -21,25 +35,24 @@ describe('NavItemModel', () => {
     expect(() => {
       model.icon = 'email'
     }).toThrow()
-    // @ts-expect-error — no setter
-    expect(() => {
-      model.to = '/v2'
-    }).toThrow()
   })
 
-  it('validates that to is a registered route (type-safe)', () => {
-    // TypeScript error at compile time if to is not a valid route
-    const model = new NavItemModel({ id: 'nav-person', icon: 'person', to: '/v1' })
-    expect(model.to).toBeDefined()
+  it('normalizes string input to URL through protected parseUrl', () => {
+    const parsed = TestNavItemModel.parseForTest('https://soyaaroncervantes.com')
+
+    expect(parsed).toBeInstanceOf(URL)
+    expect(parsed.href).toBe('https://soyaaroncervantes.com/')
   })
 
-  it('accepts different registered routes', () => {
-    const model1 = new NavItemModel({ id: 'nav-v1', icon: 'person', to: '/v1' })
-    const model2 = new NavItemModel({ id: 'nav-v2', icon: 'email', to: '/v2' })
-    const model3 = new NavItemModel({ id: 'nav-root', icon: 'home', to: '/' })
+  it('returns the same URL instance for URL inputs', () => {
+    const url = new URL('https://soyaaroncervantes.com')
 
-    expect(model1.to).toBe('/v1')
-    expect(model2.to).toBe('/v2')
-    expect(model3.to).toBe('/')
+    const parsed = TestNavItemModel.parseForTest(url)
+
+    expect(parsed).toBe(url)
+  })
+
+  it('throws for invalid URL strings', () => {
+    expect(() => TestNavItemModel.parseForTest('invalid-url')).toThrow('Invalid URL')
   })
 })

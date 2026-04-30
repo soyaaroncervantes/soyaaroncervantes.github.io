@@ -78,7 +78,7 @@ import { Theme } from '@/features/theme/components'
 
 <Theme.Text variant="display" size="large">Hello</Theme.Text>
 <Theme.Button>Click me</Theme.Button>
-<Theme.Icon>home</Theme.Icon>
+<Theme.Icon name="home" />
 
 <Card>
   <Card.Header>Title</Card.Header>

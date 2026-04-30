@@ -70,6 +70,69 @@ src/
 - Ask for clarification before making destructive changes
 - If a request is ambiguous, ask before coding
 
+# Plan Writing Conventions
+
+When authoring or updating a plan (the markdown file produced by `CreatePlan` and any subsequent edits to it), follow these rules so the user can review the plan without re-deriving anything from memory.
+
+## Explicit signatures in tables
+
+When a method-by-method or class reference table lists a constructor or method, **every parameter must be visible**. No abbreviations. No `args: SomeType`. No `(input)` alone.
+
+- Constructors: list every destructured field by name, including optional fields with `?`. Example: `constructor({ id, icon, url, filename? })`.
+- Other methods: include both the parameter name AND its type when the type adds information. Example: `#parseAndValidate(input: string | URL)`, `onClick(event: MouseEvent, { onActivate }: NavItemClickDeps)`.
+- Avoid passing a typed bag like `args: AnchorConstructorArgs` in the table — destructure it inline so the reader sees the fields without scrolling to the type definition.
+
+Bad (forces the reader to look up `args` elsewhere):
+
+```
+| `constructor(args: NavItemDto & { url })` | ... |
+| `#parseAndValidate(input)` | ... |
+```
+
+Good (every prop is visible at a glance):
+
+```
+| `constructor({ id, icon, url })` | ... |
+| `#parseAndValidate(input: string | URL)` | ... |
+```
+
+## Code examples inline after their explanation
+
+When a section explains a class, type, or function, **place the code example immediately after the explanation that introduces it** — not in a consolidated "Skeletons" / "Examples" section at the bottom of the plan.
+
+The reader's flow should be: explain → show → next explain → next show. Grouping all explanations first and all code at the end forces the reader to context-switch back to the prose for every example.
+
+- Class reference tables: follow each table with the class skeleton (or a sub-skeleton focused on that class) right beneath it.
+- Type definitions: follow the prose introducing the type with the actual type declaration in a code block.
+- Subclass differences: keep each subclass's skeleton next to its own table, even if the parent already showed similar code — duplication is worth the colocated reading flow.
+
+## Apply both rules retroactively when editing an existing plan
+
+When an existing plan is being modified, **also apply these rules to any tables and code blocks adjacent to your edit**. Don't leave a plan half-following the conventions; bring touched sections into compliance.
+
+## Every phase ends with a tests + smoke step
+
+When a plan is split into execution phases, **each phase must finish with an explicit test loop**, never relegated to "exit criteria" prose. The block must include, in order:
+
+1. **Update affected unit tests** to match the refactor (move, rename, adjust mocks). If a test only existed to cover removed behavior, delete it; if behavior moved to a new file, move the test.
+2. **`bun test`** until green for the files in scope (run the full suite at minimum on the last sub-phase).
+3. **`bun check`** (lint + typecheck) — must report zero errors before the phase is considered done.
+4. **Smoke-test the running app** (`bun dev`) for the flows the phase touched — e.g. click every refactored nav item, exercise every renamed component. Refactors that don't produce a runtime difference still need a manual verification pass to confirm nothing regressed silently.
+
+This applies whether the phase is a refactor, a new feature, or a chore. Never assume "if it compiles it ships".
+
+## Pull dependencies forward when they simplify the implementation
+
+When a plan would benefit from a Vite plugin, codegen tool, or library that **simplifies** or **removes a hand-maintained source of truth**, install it in the **phase that first uses it** rather than parking it as "future hardening" or "optional optimization".
+
+Rule of thumb: if the alternative is a hand-written constant or registry that must be kept in sync with another file (sprite IDs, route lists, environment keys), and a stable plugin can generate that constant for you, **adopt the plugin now**. Hand-written sources of truth are bug factories.
+
+When pulling a dependency forward, the phase scope must include:
+- The `bun add` (or `bun add -D`) line.
+- The minimal config diff (e.g. `vite.config.ts`).
+- The path of the generated artifact and its `.gitignore` entry if applicable.
+- A note that the consumer code now imports from the generated file rather than maintaining its own constant.
+
 # Additional Context
 
 - Refer to `PRD.md` for product requirements and feature scope

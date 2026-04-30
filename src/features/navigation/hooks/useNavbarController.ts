@@ -1,6 +1,7 @@
 import { useRouter, useRouterState } from '@tanstack/react-router'
 import { useEffect, useMemo } from 'react'
 import type { NavItemModel } from '../models/NavItemModel'
+import { RouteNavItemModel } from '../models/RouteNavItemModel'
 import type { NavbarMap } from '../types'
 
 type UseNavbarControllerReturn = {
@@ -20,6 +21,9 @@ export const useNavbarController = (navigation: NavbarMap): UseNavbarControllerR
     for (const set of navigation.values()) {
       if (set === null) continue // Spacer, no hay ruta
       for (const model of set) {
+        if (!(model instanceof RouteNavItemModel)) {
+          continue
+        }
         router.preloadRoute({ to: model.to })
       }
     }
@@ -29,7 +33,12 @@ export const useNavbarController = (navigation: NavbarMap): UseNavbarControllerR
   const activeItem = useMemo(() => {
     const allItems = [...navigation.values()].flatMap((set) => (set === null ? [] : [...set]))
 
-    return allItems.find((model) => model.to === location.pathname) ?? null
+    return (
+      allItems.find(
+        (model): model is RouteNavItemModel =>
+          model instanceof RouteNavItemModel && model.to === location.pathname
+      ) ?? null
+    )
   }, [navigation, location.pathname])
 
   return { navigationEntries, activeItem }

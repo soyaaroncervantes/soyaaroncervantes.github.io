@@ -5,6 +5,7 @@ import type { NavItemModel } from '../../models/NavItemModel'
 export type NavbarContextType = {
   navigation: Array<[groupId: string, itemsSet: Nullable<Set<NavItemModel>>]>
   activeItem: NavItemModel | null
+  onActivate?: (model: NavItemModel) => void
 }
 
 export const NavbarContext = createContext<Nullable<NavbarContextType>>(null)

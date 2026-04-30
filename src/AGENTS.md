@@ -186,3 +186,8 @@ Card.Footer = ThemeCardFooter    // renders <div slot="footer">
 ```
 
 **Other examples:** Any future M3E wrapper component with slot-based projection.
+
+**Rule — when NOT to create sub-components:**
+- Compound sub-components must represent semantically distinct UI pieces (`Card.Header`, `Nav.Group`, etc.).
+- Do **not** create sub-components for internal rendering branches (`Icon.Svg`, `Icon.Material`, `Icon.Slot`).
+- If the difference is an implementation detail (e.g., sprite SVG vs font icon), keep a single public component API and dispatch internally.

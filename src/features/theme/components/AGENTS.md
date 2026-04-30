@@ -179,6 +179,11 @@ Card.Actions = ThemeCardActions
 - No shared state between sub-components
 - No need for context or hooks in sub-components
 
+**When NOT to compound:**
+- Do not create sub-components to represent internal rendering branches.
+- Bad: `Icon.Svg`, `Icon.Material`, or `Icon.Slot` when the difference is renderer internals.
+- Good: expose a single semantic API (`Theme.Icon`) and dispatch internally (sprite registry vs Material icon).
+
 ---
 
 #### Variant B: With Context (e.g., `Nav`)

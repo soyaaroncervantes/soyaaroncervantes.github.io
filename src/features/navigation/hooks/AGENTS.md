@@ -36,13 +36,16 @@ const activeItem = useMemo(() => {
   const allItems = [...navigation.values()]
     .flatMap(set => set === null ? [] : [...set])
   
-  return allItems.find(model => model.to === location.pathname) ?? null
+  return allItems.find(
+    (model): model is RouteNavItemModel =>
+      model instanceof RouteNavItemModel && model.to === location.pathname
+  ) ?? null
 }, [navigation, location.pathname])
 ```
 
 **Why:**
 - Source of truth: `location.pathname` (from router)
-- Compares with `model.to` to find the active item
+- Compares only `RouteNavItemModel.to` to find the active item
 - Returns `null` if no match
 
 ### 3. Route Prefetch
@@ -52,6 +55,7 @@ useEffect(() => {
   for (const set of navigation.values()) {
     if (set === null) continue  // Spacer, no route
     for (const model of set) {
+      if (!(model instanceof RouteNavItemModel)) continue
       router.preloadRoute({ to: model.to })
     }
   }

@@ -1,5 +1,6 @@
+import { useNavigate } from '@tanstack/react-router'
 import { Fragment, type ReactNode } from 'react'
-import { Icon } from '@/features/theme/components/icon/Icon'
+import { Theme } from '@/features/theme/components'
 import { Nav } from '@/features/theme/components/nav/Nav'
 import type { NavItemProps } from '@/features/theme/components/nav/NavItem'
 import type { NavItemModel } from '../../models/NavItemModel'
@@ -13,15 +14,17 @@ type ItemProps = NavItemProps & {
   model: NavItemModel
 }
 const Item = ({ model, selected, ...props }: ItemProps) => {
+  const navigate = useNavigate()
+  const { onActivate } = useNavbarContext()
+
   return (
     <Nav.Item
       selected={selected}
       {...props}
-      // onClick={() => model.to && navigate({ to: model.to })}
-      // href={model.url ? new URL(model.url).href : undefined}
+      onClick={(event) => model.onClick(event.nativeEvent, { navigate, onActivate })}
+      {...model.toAnchorAttrs()}
     >
-      {!model.canUseExternalIcon() && <Icon slot="icon" name={model.icon} />}
-      {model.canUseExternalIcon() && <Icon.Svg id={model.icon} aria-label={model.id} />}
+      <Theme.Icon slot="icon" name={model.icon} aria-label={model.id} />
     </Nav.Item>
   )
 }

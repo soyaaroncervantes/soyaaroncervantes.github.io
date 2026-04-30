@@ -14,7 +14,7 @@ import type { NavItemModel } from './models/NavItemModel'
  * const navigation: NavbarMap = new Map([
  *   ['spacer-top', null],
  *   ['main', new Set([
- *     new NavItemModel({ id: 'nav-person', icon: 'person', to: '/v1/' }),
+ *     new RouteNavItemModel({ id: 'nav-person', icon: 'person', to: '/v1/' }),
  *   ])],
  * ])
  * ```

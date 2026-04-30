@@ -1,17 +1,23 @@
-import type { Nullable } from '@/shared/base.types'
-import type { NavItemDto, NavRoute } from '../dtos/NavItemDto'
+import type { LinkButtonMixin } from '@m3e/web/core'
+import type { NavigateFn } from '@tanstack/react-router'
+import type { NavItemDto } from '../dtos/NavItemDto'
 
-export class NavItemModel {
+export type NavItemAnchorAttrs = Partial<
+  Pick<LinkButtonMixin, 'href' | 'target' | 'rel' | 'download'>
+>
+
+export type NavItemClickDeps = {
+  navigate: NavigateFn
+  onActivate?: (model: NavItemModel) => void
+}
+
+export abstract class NavItemModel {
   readonly #id: string
   readonly #icon: string
-  readonly #to: Nullable<NavRoute>
-  readonly #url: Nullable<URL>
 
-  constructor({ id, icon, to, url }: NavItemDto) {
+  protected constructor({ id, icon }: NavItemDto) {
     this.#id = id
     this.#icon = icon
-    this.#to = to ?? null
-    this.#url = url ?? null
   }
 
   get id(): string {
@@ -22,15 +28,14 @@ export class NavItemModel {
     return this.#icon
   }
 
-  get to(): Nullable<NavRoute> {
-    return this.#to
+  protected static parseUrl(input: string | URL): URL {
+    const parsed = input instanceof URL ? input : URL.parse(input)
+    if (!parsed) {
+      throw new Error(`Invalid URL: ${String(input)}`)
+    }
+    return parsed
   }
 
-  get url(): Nullable<URL> {
-    return this.#url
-  }
-
-  canUseExternalIcon(): boolean {
-    return !!this.#url
-  }
+  abstract toAnchorAttrs(): NavItemAnchorAttrs
+  abstract onClick(event: MouseEvent, deps: NavItemClickDeps): void
 }

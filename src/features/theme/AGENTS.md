@@ -33,19 +33,18 @@ All components are exported from `components/index.ts` under a single `Theme` ob
 
 ```ts
 import { Theme } from '@/features/theme/components'
-import { Icon } from '@/features/theme/components/icon/Icon'
 
 <Theme.Card>...</Theme.Card>
 <Theme.Card.Header>...</Theme.Card.Header>
 <Theme.Card.Content>...</Theme.Card.Content>
 <Theme.Text variant="body">Hello</Theme.Text>
-<Icon.Svg id="github" />
+<Theme.Icon name="github" />
 ```
 
 **Current exports:**
 - `Theme.Card` — compound without Context (`Card.Header`, `Card.Content`, `Card.Footer`, `Card.Actions`)
 - `Theme.Text` — M3E heading wrapper
-- `Icon` — compound without Context, imported directly from `icon/Icon` (`Icon.Svg`)
+- `Theme.Icon` — single icon API; internally dispatches sprite vs Material rendering
 
 ---
 

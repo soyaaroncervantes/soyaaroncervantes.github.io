@@ -9,16 +9,17 @@ Domain abstraction for navigation, separated from the design system (`theme`).
 The `navigation` feature provides components and logic to handle application navigation in a type-safe manner, integrated with TanStack Router.
 
 **Separation of concerns:**
-- `theme`: Visual components (Nav, NavItem, NavGroup) — how it looks
-- `navigation`: Navigation logic (Navbar, NavItemModel) — what to navigate and when
+- `theme`: visual components (`Nav`, `NavItem`, `NavGroup`) — how it looks
+- `navigation`: action models + navbar orchestration — what to do on activation
 
 ---
 
 ## Applied Patterns
 
-1. **DTO → Model:** `NavItemDto` (data shape) → `NavItemModel` (domain logic)
+1. **DTO → Polymorphic Model:** DTOs map to concrete model subclasses (`RouteNavItemModel`, `ExternalLinkNavItemModel`, `MailtoNavItemModel`, `DownloadNavItemModel`, `ShareNavItemModel`)
 2. **ViewController (Hook):** `useNavbarController` handles navigation logic and prefetch
-3. **Compound Component (Variant A — With Context):** `Navbar` with sub-components and shared context
+3. **Template Method + Polymorphism:** `AnchorNavItemModel` centralizes URL/scheme validation, while subclasses define allowed schemes + attrs
+4. **Compound Component (Variant A — With Context):** `Navbar` with sub-components and shared context
 
 ---
 
@@ -27,9 +28,21 @@ The `navigation` feature provides components and logic to handle application nav
 ```
 src/features/navigation/
   dtos/
-    NavItemDto.ts              — raw data shape for an item
+    NavItemDto.ts              — base item DTO + NavRoute alias
+    RouteNavItemDto.ts
+    ExternalLinkNavItemDto.ts
+    MailtoNavItemDto.ts
+    DownloadNavItemDto.ts
+    ShareNavItemDto.ts
   models/
-    NavItemModel.ts            — Model class for a nav item
+    NavItemModel.ts            — abstract base contract + parseUrl helper
+    RouteNavItemModel.ts
+    AnchorNavItemModel.ts
+    ExternalLinkNavItemModel.ts
+    MailtoNavItemModel.ts
+    DownloadNavItemModel.ts
+    ShareNavItemModel.ts
+    AGENTS.md                  — model hierarchy and extension rules
   components/
     navbar/
       Navbar.tsx               — Root + NavbarContext + compound registration
@@ -78,7 +91,9 @@ The selective override pattern allows customizing specific navigation elements w
 type NavRoute = ValidateNavigateOptions<RegisteredRouter>['to']
 ```
 
-Ensures all routes in `NavItemModel.to` are registered routes in TanStack Router. TypeScript error if the route doesn't exist.
+Ensures all routes used by `RouteNavItemModel.to` are registered routes in TanStack Router.
+
+`useNavbarController` only preloads/matches instances of `RouteNavItemModel` via `instanceof`.
 
 ---
 
