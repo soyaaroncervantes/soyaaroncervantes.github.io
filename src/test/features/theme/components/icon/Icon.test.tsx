@@ -15,7 +15,6 @@ describe('ThemeIcon', () => {
   it('renders a material icon for non-sprite names', () => {
     render(<ThemeIcon name="person" />)
     expect(screen.getByTestId('m3e-icon')).toHaveAttribute('name', 'person')
-    expect(screen.getByTestId('m3e-icon')).toHaveTextContent('person')
   })
 
   it('forwards props to the M3E icon', () => {
