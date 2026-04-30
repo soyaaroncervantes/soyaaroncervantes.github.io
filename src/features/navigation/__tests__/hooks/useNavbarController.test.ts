@@ -1,25 +1,29 @@
+import { useRouterState } from '@tanstack/react-router'
 import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useNavbarController } from '../../hooks/useNavbarController'
 import { NavItemModel } from '../../models/NavItemModel'
 import type { NavbarMap } from '../../types'
 
-// Mock TanStack Router
 vi.mock('@tanstack/react-router', () => ({
-  useRouter: () => ({
+  useRouter: vi.fn(() => ({
     preloadRoute: vi.fn(),
-  }),
-  useRouterState: () => ({
+  })),
+  useRouterState: vi.fn(() => ({
     location: {
       pathname: '/v1',
     },
-  }),
+  })),
 }))
 
 describe('useNavbarController', () => {
   let mockNavigation: NavbarMap
 
   beforeEach(() => {
+    vi.mocked(useRouterState).mockReturnValue({
+      location: { pathname: '/v1' },
+    } as ReturnType<typeof useRouterState>)
+
     mockNavigation = new Map([
       ['spacer-top', null],
       [
@@ -50,10 +54,9 @@ describe('useNavbarController', () => {
   })
 
   it('returns null if there is no active route', () => {
-    // Mock unregistered route
     vi.mocked(useRouterState).mockReturnValue({
       location: { pathname: '/not-found' },
-    } as any)
+    } as ReturnType<typeof useRouterState>)
 
     const { result } = renderHook(() => useNavbarController(mockNavigation))
     expect(result.current.activeItem).toBeNull()
