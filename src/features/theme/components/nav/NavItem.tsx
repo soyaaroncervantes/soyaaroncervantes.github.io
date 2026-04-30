@@ -1,7 +1,7 @@
 import { M3eNavItem } from '@m3e/react/nav-bar'
 import type { ComponentProps, PropsWithChildren } from 'react'
 import { useNavItemController } from '../../hooks/useNavItemController'
-import { ThemeIcon } from '../icon/Icon'
+import { M3eMaterialIcon } from '../icon/M3eMaterialIcon'
 import styles from './nav.module.css'
 
 export type NavItemProps = PropsWithChildren &
@@ -22,7 +22,7 @@ export const NavItem = ({ children, className, ...props }: NavItemProps) => {
       onChange={onChangeHandler}
       className={resolvedClassName}
     >
-      {props.icon && <ThemeIcon slot="icon" name={props.icon} />}
+      {props.icon && <M3eMaterialIcon slot="icon" name={props.icon} />}
       {children}
     </M3eNavItem>
   )

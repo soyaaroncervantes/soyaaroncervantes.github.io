@@ -1,6 +1,6 @@
-import { M3eIcon } from '@m3e/react/icon'
+import type { M3eIcon } from '@m3e/react/icon'
 import type { ComponentProps } from 'react'
-import { useLayoutEffect, useRef } from 'react'
+import { M3eMaterialIcon } from './M3eMaterialIcon'
 import { isSpriteIcon } from './registry'
 
 export type ThemeIconProps = Omit<ComponentProps<typeof M3eIcon>, 'name'> & {
@@ -15,16 +15,6 @@ export const ThemeIcon = ({
   color,
   ...props
 }: ThemeIconProps) => {
-  const materialRef = useRef<HTMLElement | null>(null)
-
-  useLayoutEffect(() => {
-    const el = materialRef.current
-    if (!el) return
-    // `m3e-icon` paints from the Lit `name` property inside its shadow tree, not from light-DOM children.
-    // With React 19, @lit/react can leave `name` unset on the element; sync after mount/updates.
-    Object.assign(el, { name })
-  }, [name])
-
   if (isSpriteIcon(name)) {
     const href = `${spriteHref}#${name}`
     return (
@@ -42,5 +32,5 @@ export const ThemeIcon = ({
     )
   }
 
-  return <M3eIcon ref={materialRef} {...props} name={name} />
+  return <M3eMaterialIcon {...props} name={name} />
 }

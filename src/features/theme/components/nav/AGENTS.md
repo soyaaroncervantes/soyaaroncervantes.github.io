@@ -188,7 +188,7 @@ export const NavItem = ({ children, className, ...props }: Props) => {
 
   return (
     <M3eNavItem {...props} selected={isSelected} ref={m3eNavItemRef} onChange={onChangeHandler} className={resolvedClassName}>
-      {props.icon && <Theme.Icon slot="icon" name={props.icon} />}
+      {props.icon && <M3eMaterialIcon slot="icon" name={props.icon} />}
       {children}
     </M3eNavItem>
   )

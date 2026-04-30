@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router'
 import { Fragment, type ReactNode } from 'react'
-import { Theme } from '@/features/theme/components'
+import { M3eMaterialIcon } from '@/features/theme/components/icon/M3eMaterialIcon'
 import { Nav } from '@/features/theme/components/nav/Nav'
 import type { NavItemProps } from '@/features/theme/components/nav/NavItem'
 import type { NavItemModel } from '../../models/NavItemModel'
@@ -24,7 +24,7 @@ const Item = ({ model, selected, ...props }: ItemProps) => {
       onClick={(event) => model.onClick(event.nativeEvent, { navigate, onActivate })}
       {...model.toAnchorAttrs()}
     >
-      <Theme.Icon slot="icon" name={model.icon} aria-label={model.id} />
+      <M3eMaterialIcon slot="icon" name={model.icon} aria-label={model.id} />
     </Nav.Item>
   )
 }
