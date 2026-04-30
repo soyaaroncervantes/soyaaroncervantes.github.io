@@ -6,18 +6,18 @@ export const navigation: NavbarMap = new Map([
     'main',
     new Set([
       new NavItemModel({ id: 'nav-person', icon: 'person', to: '/v1' }),
-      new NavItemModel({ id: 'nav-v2', icon: 'email', to: '/v2' }),
+      new NavItemModel({ id: 'nav-emailme', icon: 'email', to: '/v2' }),
     ]),
   ],
   [
     'actions',
     new Set([
       new NavItemModel({
-        id: 'nav-github',
+        id: 'nav-share-website',
         icon: 'share',
       }),
       new NavItemModel({
-        id: 'nav-linkedin',
+        id: 'nav-personal-cv',
         icon: 'download',
       }),
     ]),
