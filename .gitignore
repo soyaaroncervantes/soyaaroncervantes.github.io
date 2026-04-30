@@ -25,4 +25,3 @@ dist-ssr
 
 .env
 src/routeTree.gen.ts
-src/features/theme/components/icon/icon-names.generated.ts

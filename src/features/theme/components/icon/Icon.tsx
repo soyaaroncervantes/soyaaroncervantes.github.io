@@ -9,7 +9,12 @@ export type ThemeIconProps = Omit<ComponentProps<typeof M3eIcon>, 'name'> & {
   color?: string
 }
 
-export const ThemeIcon = ({ name, spriteHref = '/icons.svg', color, ...props }: ThemeIconProps) => {
+export const ThemeIcon = ({
+  name,
+  spriteHref = `${import.meta.env.BASE_URL}icons.svg`,
+  color,
+  ...props
+}: ThemeIconProps) => {
   const materialRef = useRef<HTMLElement | null>(null)
 
   useLayoutEffect(() => {
@@ -21,10 +26,18 @@ export const ThemeIcon = ({ name, spriteHref = '/icons.svg', color, ...props }: 
   }, [name])
 
   if (isSpriteIcon(name)) {
+    const href = `${spriteHref}#${name}`
     return (
       // biome-ignore lint/a11y/noSvgWithoutTitle: aria-label is forwarded via props
-      <svg style={{ color }} {...props}>
-        <use href={`${spriteHref}#${name}`} />
+      <svg
+        width="1em"
+        height="1em"
+        fill="currentColor"
+        style={{ color, display: 'block' }}
+        {...props}
+      >
+        {/* href: SVG2; xlinkHref helps older WebKit with external sprites in shadow trees */}
+        <use href={href} xlinkHref={href} />
       </svg>
     )
   }

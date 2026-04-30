@@ -40,10 +40,14 @@ function V1Page() {
                     href="https://github.com/soyaaroncervantes"
                     target="_blank"
                   >
-                    <Theme.Icon name="github" aria-label="GitHub" />
+                    <Theme.Icon name="github" aria-label="GitHub" className={profileStyles.media} />
                   </Button.Icon>
                   <Button.Icon href="https://linkedin.com/in/soyaaroncervantes" target="_blank">
-                    <Theme.Icon name="linkedin" aria-label="LinkedIn" />
+                    <Theme.Icon
+                      name="linkedin"
+                      aria-label="LinkedIn"
+                      className={profileStyles.media}
+                    />
                   </Button.Icon>
                 </Card.Footer>
               </div>
