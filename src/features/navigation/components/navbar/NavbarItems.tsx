@@ -21,8 +21,7 @@ const Item = ({ model, selected, ...props }: ItemProps) => {
     <Nav.Item
       selected={selected}
       {...props}
-      onClick={(event) =>
-        model.onClick(event as MouseEvent, { navigate, onActivate })}
+      onClick={(event) => model.onClick(event as MouseEvent, { navigate, onActivate })}
       {...model.toAnchorAttrs()}
     >
       <Theme.Icon name={model.icon} aria-label={model.id} />
