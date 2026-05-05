@@ -30,14 +30,6 @@ vi.mock('@m3e/react/nav-bar', () => ({
   ),
 }))
 
-vi.mock('@m3e/react/icon', () => ({
-  M3eIcon: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <span data-testid="m3e-icon" {...props}>
-      {children}
-    </span>
-  ),
-}))
-
 import { Nav } from '@/features/theme/components/nav/Nav'
 import { NavItem } from '@/features/theme/components/nav/NavItem'
 import navStyles from '@/features/theme/components/nav/nav.module.css'
@@ -72,13 +64,13 @@ describe('NavItem', () => {
     expect(el).toHaveClass('extra')
   })
 
-  it('renders an icon when the icon prop is provided', () => {
+  it('forwards icon prop to M3eNavItem', () => {
     renderInNav({ icon: 'person' })
-    expect(screen.getByTestId('m3e-icon')).toBeInTheDocument()
+    expect(screen.getByTestId('m3e-nav-item')).toHaveAttribute('icon', 'person')
   })
 
-  it('does not render an icon when the icon prop is absent', () => {
+  it('does not set icon when the icon prop is absent', () => {
     renderInNav()
-    expect(screen.queryByTestId('m3e-icon')).not.toBeInTheDocument()
+    expect(screen.getByTestId('m3e-nav-item')).not.toHaveAttribute('icon')
   })
 })
