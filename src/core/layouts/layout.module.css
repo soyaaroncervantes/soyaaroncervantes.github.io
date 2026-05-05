@@ -21,9 +21,11 @@
 .screen {
   display: flex;
   min-height: 100dvh;
+  position: relative;
 }
 
 .content {
   flex-grow: 1;
   display: grid;
+  overflow-y: scroll;
 }

@@ -11,6 +11,7 @@
 - Use `URL | null` (not `string | null`) for fields that hold the result of URL parsing — `URL.parse()` returns `URL | null`, not a string.
 - Eliminate single-use private wrapper methods that only delegate to one expression; inline the call at the call site instead.
 - When multiple subclasses need the same helper, extract it as `protected static` on the base class rather than duplicating inline in each sibling.
+- When the public icon compound naming rule changes (format-based subs like `Icon.Svg`, not opaque names like `Icon.Slot` / `Icon.Material`), update matching plan tables in `.cursor/rules/RULE.md` in the same change set so examples stay consistent.
 
 ## Learned Workspace Facts
 
@@ -19,4 +20,7 @@
 - `@m3e/react`'s `M3eNavItem` natively accepts `href`, `target`, `rel`, and `download` via `LinkButtonMixin` from `@m3e/web`, so anchor attributes can be spread onto `<Nav.Item>` without wrapper components
 - Anchor-attribute types (e.g. `NavItemAnchorAttrs`) should extend `LinkButtonMixin` from `@m3e/web` rather than redeclaring equivalent props from scratch
 - `ShareNavItemDto.url` is optional so `ShareNavItemModel` can fall back to `window.location.href` at click time; the navigation map is initialized once per session, so capturing `window.location` at construction would freeze the URL of the wrong page
-- Theme `Icon` compound subcomponents should be named by **delivery format** (e.g. SVG sprite vs font/library icon), not M3E shadow-slot jargon (`Icon.Slot`) or vendor-only labels like `Icon.Material` as the primary public API; `Theme.Icon` should default `slot="icon"` when projecting into M3E slots unless a caller overrides it
+- Theme `Icon` compound subcomponents should be named by **delivery format** (e.g. SVG sprite vs font/library icon), not M3E shadow-slot jargon (`Icon.Slot`) or vendor-only labels like `Icon.Material` as the primary public API; the theme `Icon` implementation sets `slot="icon"` after spreading props, so callers cannot override `slot` through that wrapper
+- Run Vitest-based tests with `bun run test -- --run` (see `src/test/AGENTS.md`); plain `bun test` uses Bun's native runner and does not load Vitest config or path aliases such as `@/`
+- `M3eNavItem`'s `onClick` delivers a native DOM `Event`, not a `React.MouseEvent`; bridge to APIs expecting `MouseEvent` with an explicit cast (e.g. `event as MouseEvent`)
+- When only `Layout.Content` should scroll beside a persistent nav rail, avoid anchoring inner nav wrappers to the full viewport (e.g. `height: 100dvh` on `Nav.Container`) without a matching flex chain; pair the row flex host with `min-height: 0` on the scrollable `main` and parent-relative height on the rail column so the rail height tracks the content column, not an independent viewport block

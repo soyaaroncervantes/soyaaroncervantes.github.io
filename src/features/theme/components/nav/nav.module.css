@@ -8,6 +8,7 @@
   --m3e-nav-rail-bottom-space: 0rem;
   --m3e-nav-rail-top-space: 0rem;
   background-color: var(--m3e-nav-bar-container-color);
+  position: sticky;
 }
 
 .base[color="primary"] {
