@@ -1,15 +1,14 @@
 import { M3eNavItem } from '@m3e/react/nav-bar'
 import type { ComponentProps, PropsWithChildren } from 'react'
 import { useNavItemController } from '../../hooks/useNavItemController'
-import { M3eMaterialIcon } from '../icon/M3eMaterialIcon'
+import { ThemeIcon } from '../icon/Icon'
 import styles from './nav.module.css'
 
-export type NavItemProps = PropsWithChildren &
-  ComponentProps<typeof M3eNavItem> & {
-    icon?: string
-  }
-export const NavItem = ({ children, className, ...props }: NavItemProps) => {
-  const { m3eNavItemRef, isSelected, onChangeHandler } = useNavItemController(props)
+export type NavItemProps = PropsWithChildren & ComponentProps<typeof M3eNavItem>
+
+export const NavItem = (navProps: NavItemProps) => {
+  const { children, className, icon, ...props } = navProps
+  const { m3eNavItemRef, isSelected, onChangeHandler } = useNavItemController(navProps)
 
   const resolvedClassName =
     [props.disabled && styles.disabled, className].filter(Boolean).join(' ') || undefined
@@ -22,7 +21,7 @@ export const NavItem = ({ children, className, ...props }: NavItemProps) => {
       onChange={onChangeHandler}
       className={resolvedClassName}
     >
-      {props.icon && <M3eMaterialIcon slot="icon" name={props.icon} />}
+      {icon && <ThemeIcon name={icon} />}
       {children}
     </M3eNavItem>
   )

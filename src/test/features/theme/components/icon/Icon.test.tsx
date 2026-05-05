@@ -9,9 +9,9 @@ vi.mock('@m3e/react/icon', () => ({
   ),
 }))
 
-import { ThemeIcon } from '@/features/theme/components/icon/Icon'
+import { Icon, ThemeIcon } from '@/features/theme/components/icon/Icon'
 
-describe('ThemeIcon', () => {
+describe('Theme.Icon (Facade)', () => {
   it('renders a material icon for non-sprite names', () => {
     render(<ThemeIcon name="person" />)
     expect(screen.getByTestId('m3e-icon')).toHaveAttribute('name', 'person')
@@ -27,14 +27,32 @@ describe('ThemeIcon', () => {
     expect(screen.getByTestId('m3e-icon')).toHaveClass('icon-sm')
   })
 
+  it('applies slot="icon" by default on material branch', () => {
+    render(<ThemeIcon name="person" />)
+    expect(screen.getByTestId('m3e-icon')).toHaveAttribute('slot', 'icon')
+  })
+
+  it('allows overriding slot on material branch', () => {
+    render(<ThemeIcon name="person" slot="leading" />)
+    expect(screen.getByTestId('m3e-icon')).toHaveAttribute('slot', 'leading')
+  })
+
   it('renders svg sprite for known sprite names', () => {
-    render(<ThemeIcon name="github" data-testid="sprite-icon" aria-label="GitHub Icon" />)
+    render(
+      <ThemeIcon
+        name="github"
+        spriteHref="/icons.svg"
+        data-testid="sprite-icon"
+        aria-label="GitHub Icon"
+      />
+    )
 
     const svg = screen.getByTestId('sprite-icon')
     const useElement = svg.querySelector('use')
 
     expect(svg.tagName.toLowerCase()).toBe('svg')
     expect(svg).toHaveAttribute('aria-label', 'GitHub Icon')
+    expect(svg).toHaveAttribute('slot', 'icon')
     expect(useElement).toHaveAttribute('href', '/icons.svg#github')
   })
 
@@ -53,5 +71,29 @@ describe('ThemeIcon', () => {
 
     expect(useElement).toHaveAttribute('href', '/custom-icons.svg#linkedin')
     expect(svg).toHaveStyle({ color: 'rgb(255, 0, 0)' })
+  })
+
+  it('exposes Theme.Icon.Svg same as Icon.Svg', () => {
+    expect(ThemeIcon.Svg).toBe(Icon.Svg)
+  })
+})
+
+describe('Icon (compound)', () => {
+  it('renders M3E root with slot="icon" by default', () => {
+    render(<Icon name="person" />)
+    expect(screen.getByTestId('m3e-icon')).toHaveAttribute('slot', 'icon')
+  })
+
+  it('renders Icon.Svg in isolation', () => {
+    render(
+      <Icon.Svg name="github" spriteHref="/icons.svg" data-testid="iso-svg" aria-label="Git" />
+    )
+    const svg = screen.getByTestId('iso-svg')
+    expect(svg.querySelector('use')).toHaveAttribute('href', '/icons.svg#github')
+    expect(svg).toHaveAttribute('slot', 'icon')
+  })
+
+  it('registers Svg on the compound', () => {
+    expect(Icon.Svg).toBeDefined()
   })
 })
