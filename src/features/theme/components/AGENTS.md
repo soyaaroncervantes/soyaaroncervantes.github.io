@@ -145,6 +145,8 @@ Card.Actions = ThemeCardActions
 
 Sub-components are **independent wrappers** with no shared state. Use when sub-components only project content or wrap elements without needing to communicate.
 
+For **`Icon`**, sub-components are grouped by **delivery format** (e.g. `Icon.Svg` for sprite SVG, future `Icon.Woff2`, etc.) — not by opaque implementation labels (`Icon.Slot`, `Icon.Material` as public names). **`Theme.Icon`** is the **Facade** for callers; see [`icon/AGENTS.md`](icon/AGENTS.md). **Maintenance:** if this rule or the listed formats change, update any tables or Good/Bad examples here in the same PR (or defer to `icon/AGENTS.md` as single source of truth with one coherent summary row).
+
 ```tsx
 // Card.tsx
 export const ThemeCard = ({ children, ...props }: ThemeCardProps) => (
@@ -180,9 +182,8 @@ Card.Actions = ThemeCardActions
 - No need for context or hooks in sub-components
 
 **When NOT to compound:**
-- Do not create sub-components to represent internal rendering branches.
-- Bad: `Icon.Svg`, `Icon.Material`, or `Icon.Slot` when the difference is renderer internals.
-- Good: expose a single semantic API (`Theme.Icon`) and dispatch internally (sprite registry vs Material icon).
+- Do not create sub-components that are **only** internal renderer toggles with **non-semantic** names (e.g. `Icon.Slot`, `Icon.Material` as the *public* API for “how we paint”).
+- **Good for `Icon`:** sub-components named by **format** (`Icon.Svg`, …); **`Theme.Icon`** remains the Facade so most code does not branch manually. Full rules: [`icon/AGENTS.md`](icon/AGENTS.md).
 
 ---
 

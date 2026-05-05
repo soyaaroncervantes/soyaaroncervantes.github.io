@@ -187,7 +187,9 @@ Card.Footer = ThemeCardFooter    // renders <div slot="footer">
 
 **Other examples:** Any future M3E wrapper component with slot-based projection.
 
-**Rule — when NOT to create sub-components:**
+**Rule — compound sub-components (incl. `Icon`):**
 - Compound sub-components must represent semantically distinct UI pieces (`Card.Header`, `Nav.Group`, etc.).
-- Do **not** create sub-components for internal rendering branches (`Icon.Svg`, `Icon.Material`, `Icon.Slot`).
-- If the difference is an implementation detail (e.g., sprite SVG vs font icon), keep a single public component API and dispatch internally.
+- For **icons**, sub-components under `Icon` are named by **delivery format** (`Icon.Svg`, future format-specific subs). Do **not** use opaque public names such as `Icon.Slot` or `Icon.Material` for those roles — see [`src/features/theme/components/icon/AGENTS.md`](src/features/theme/components/icon/AGENTS.md).
+- **`Theme.Icon`** is the **Facade**: callers use it for a single stable API; it dispatches internally. **Maintenance:** when this rule or the set of documented formats changes, update matching tables or examples in the same PR.
+
+---

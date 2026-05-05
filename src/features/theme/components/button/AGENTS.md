@@ -38,7 +38,7 @@ import { Theme } from '@/features/theme/components'
 
 // Button with icon
 <Button.Icon href="https://example.com">
-  <Theme.Svg id="github" aria-label="GitHub" />
+  <Theme.Icon name="github" aria-label="GitHub" />
 </Button.Icon>
 
 // Button group
@@ -66,7 +66,7 @@ import { Theme } from '@/features/theme/components'
 ### `Button.Icon`
 - M3E wrapper for `M3eIconButton`
 - Accepts all `M3eIconButton` props
-- Supports children (e.g., `Theme.Svg`, `Theme.Icon`)
+- Supports children (e.g., `Theme.Icon`, or `Icon.Svg` from `@/features/theme/components/icon/Icon` for edge cases)
 
 ### `Button.Group`
 - Native element wrapper for `<m3e-button-group>`

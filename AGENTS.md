@@ -19,3 +19,4 @@
 - `@m3e/react`'s `M3eNavItem` natively accepts `href`, `target`, `rel`, and `download` via `LinkButtonMixin` from `@m3e/web`, so anchor attributes can be spread onto `<Nav.Item>` without wrapper components
 - Anchor-attribute types (e.g. `NavItemAnchorAttrs`) should extend `LinkButtonMixin` from `@m3e/web` rather than redeclaring equivalent props from scratch
 - `ShareNavItemDto.url` is optional so `ShareNavItemModel` can fall back to `window.location.href` at click time; the navigation map is initialized once per session, so capturing `window.location` at construction would freeze the URL of the wrong page
+- Theme `Icon` compound subcomponents should be named by **delivery format** (e.g. SVG sprite vs font/library icon), not M3E shadow-slot jargon (`Icon.Slot`) or vendor-only labels like `Icon.Material` as the primary public API; `Theme.Icon` should default `slot="icon"` when projecting into M3E slots unless a caller overrides it

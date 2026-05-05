@@ -44,7 +44,15 @@ import { Theme } from '@/features/theme/components'
 **Current exports:**
 - `Theme.Card` — compound without Context (`Card.Header`, `Card.Content`, `Card.Footer`, `Card.Actions`)
 - `Theme.Text` — M3E heading wrapper
-- `Theme.Icon` — single icon API; internally dispatches sprite vs Material rendering
+- `Theme.Icon` — **Facade** over the icon subsistema (M3E vs SVG sprite + registry + defaults); ver `components/icon/AGENTS.md` para el detalle
+
+---
+
+## Facade en el theme (arquitectura)
+
+El design system usa el patrón **Facade** en **`Theme.Icon`**: un único punto de entrada (`Theme.*`) sobre varias implementaciones acopladas (biblioteca M3E, sprite, reglas de `slot`, etc.).
+
+**Cuándo plantear otra Facade** en un componente `Theme.*` futuro: cuando una API única deba **ocultar** varias ramas o subsistemas (misma ideología: entrada estable en el barrel, detalle y compound en el directorio del componente). No duplicar aquí el ensayo de iconos — fuente de verdad: [`components/icon/AGENTS.md`](components/icon/AGENTS.md).
 
 ---
 

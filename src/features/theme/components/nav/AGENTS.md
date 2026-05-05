@@ -181,14 +181,15 @@ export const NavRailToggle = ({ children, id, ...props }: Props) => {
 UI-only component. Delegates all selection logic to `useNavItemController`. Retains styling concerns (`resolvedClassName`) as they are UI-layer responsibilities.
 
 ```tsx
-export const NavItem = ({ children, className, ...props }: Props) => {
-  const { m3eNavItemRef, isSelected, onChangeHandler } = useNavItemController(props)
+export const NavItem = (navProps: NavItemProps) => {
+  const { children, className, icon, ...props } = navProps
+  const { m3eNavItemRef, isSelected, onChangeHandler } = useNavItemController(navProps)
 
   const resolvedClassName = [props.disabled && styles.disabled, className].filter(Boolean).join(' ') || undefined
 
   return (
     <M3eNavItem {...props} selected={isSelected} ref={m3eNavItemRef} onChange={onChangeHandler} className={resolvedClassName}>
-      {props.icon && <M3eMaterialIcon slot="icon" name={props.icon} />}
+      {icon && <ThemeIcon name={icon} />}
       {children}
     </M3eNavItem>
   )
@@ -197,8 +198,8 @@ export const NavItem = ({ children, className, ...props }: Props) => {
 
 **What stays in `NavItem` (UI concerns):**
 - `resolvedClassName` — combines `styles.disabled` and `className`; directly conditions the rendered output
-- `props.icon` — renders `Theme.Icon` into the M3E slot
-- `children` — pass-through to M3E
+- `icon` — when set, renders **`Theme.Icon`** (`ThemeIcon`) into the slot (Facade + default `slot="icon"`)
+- `children` — pass-through to M3E (e.g. `NavbarItems` can pass `<Theme.Icon … />` as children instead of using `icon`)
 
 **What lives in `useNavItemController` (logic concerns):**
 - Context interaction (`useNav`)
