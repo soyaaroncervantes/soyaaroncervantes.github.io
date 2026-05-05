@@ -24,6 +24,12 @@
   align-items: center;
 }
 
+.media {
+  width: var(--size, 1em);
+  height: var(--size, 1em);
+  color: var(--m3e-card-text-color);
+}
+
 .container {
   display: flex;
   flex-direction: column;
