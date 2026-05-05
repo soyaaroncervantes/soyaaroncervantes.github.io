@@ -40,7 +40,7 @@ describe('useNavbarController', () => {
     preloadRoute.mockReset()
     vi.mocked(useRouter).mockReturnValue({
       preloadRoute,
-    } as ReturnType<typeof useRouter>)
+    } as unknown as ReturnType<typeof useRouter>)
 
     vi.mocked(useRouterState).mockReturnValue({
       location: { pathname: '/v1' },

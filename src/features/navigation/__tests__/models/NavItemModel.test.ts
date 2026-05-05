@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest'
+import type { NavItemDto } from '../../dtos/NavItemDto'
 import type { NavItemAnchorAttrs, NavItemClickDeps } from '../../models/NavItemModel'
 import { NavItemModel } from '../../models/NavItemModel'
 
 describe('NavItemModel', () => {
   class TestNavItemModel extends NavItemModel {
+    constructor(dto: NavItemDto) {
+      super(dto)
+    }
+
     static parseForTest(input: string | URL): URL {
       return TestNavItemModel.parseUrl(input)
     }
@@ -27,12 +32,12 @@ describe('NavItemModel', () => {
   it('has readonly getters', () => {
     const model = new TestNavItemModel({ id: 'nav-person', icon: 'person' })
 
-    // @ts-expect-error — no setter
     expect(() => {
+      // @ts-expect-error — assignment to getter-only property
       model.id = 'other'
     }).toThrow()
-    // @ts-expect-error — no setter
     expect(() => {
+      // @ts-expect-error — assignment to getter-only property
       model.icon = 'email'
     }).toThrow()
   })

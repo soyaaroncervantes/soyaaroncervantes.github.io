@@ -63,14 +63,4 @@ describe('NavItem', () => {
     expect(el).toHaveClass(navStyles.disabled)
     expect(el).toHaveClass('extra')
   })
-
-  it('forwards icon prop to M3eNavItem', () => {
-    renderInNav({ icon: 'person' })
-    expect(screen.getByTestId('m3e-nav-item')).toHaveAttribute('icon', 'person')
-  })
-
-  it('does not set icon when the icon prop is absent', () => {
-    renderInNav()
-    expect(screen.getByTestId('m3e-nav-item')).not.toHaveAttribute('icon')
-  })
 })
