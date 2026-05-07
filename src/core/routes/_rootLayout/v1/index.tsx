@@ -76,59 +76,6 @@ function V1Page() {
             </div>
           </Profile>
         </section>
-        <section className={styles.profile}>
-          <Profile model={userModel}>
-            <Card className={profileStyles.card} color="secondary">
-              <Card.Header className={profileStyles.header}>
-                <Profile.Photo className={profileStyles.img} />
-              </Card.Header>
-              <div className={profileStyles.container}>
-                <Card.Content className={profileStyles.content}>
-                  <Profile.Name variant="headline" size="large" />
-                  <Profile.JobTitle />
-                </Card.Content>
-                <Card.Footer className={profileStyles.footer}>
-                  <Button.Icon
-                    size="small"
-                    href="https://github.com/soyaaroncervantes"
-                    target="_blank"
-                  >
-                    <Theme.Icon name="github" aria-label="GitHub" className={profileStyles.media} />
-                  </Button.Icon>
-                  <Button.Icon href="https://linkedin.com/in/soyaaroncervantes" target="_blank">
-                    <Theme.Icon
-                      name="linkedin"
-                      aria-label="LinkedIn"
-                      className={profileStyles.media}
-                    />
-                  </Button.Icon>
-                </Card.Footer>
-              </div>
-            </Card>
-            <div className={`${profileStyles.section} ${profileStyles.container}`}>
-              <article className={profileStyles.article}>
-                <Theme.Text variant="display" size="small">
-                  About me
-                </Theme.Text>
-                <Theme.Text variant="label" className={profileStyles.description}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias perferendis ex
-                  ea possimus in, accusantium ullam aliquid voluptatum praesentium itaque mollitia
-                  quis ipsam consequatur minus. Asperiores dicta cupiditate recusandae debitis!
-                </Theme.Text>
-              </article>
-              <article className={profileStyles.article}>
-                <Theme.Text variant="display" size="small">
-                  Knowledge
-                </Theme.Text>
-                <Theme.Text variant="label" className={profileStyles.description}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias perferendis ex
-                  ea possimus in, accusantium ullam aliquid voluptatum praesentium itaque mollitia
-                  quis ipsam consequatur minus. Asperiores dicta cupiditate recusandae debitis!
-                </Theme.Text>
-              </article>
-            </div>
-          </Profile>
-        </section>
       </Layout.Content>
     </Layout.Screen>
   )
