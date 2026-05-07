@@ -55,8 +55,8 @@ export const Route = createFileRoute('/_rootLayout/v3/')({
 
 All pages use the `Layout` compound from the theme feature (or a similar wrapper).
 
-- `Layout.Screen` — full viewport wrapper (`height: 100dvh`, `display: flex`)
-- `Layout.Content` — scrollable content area
+- `Layout.Screen` — fills `Layout.Base` (`flex: 1`, `min-height: 0`, `overflow: hidden`) beside nav + scroll column
+- `Layout.Content` — scrollable `<main>` (`flex-grow: 1`, `min-height: 0`, `overflow-y: auto`)
 
 ```tsx
 <Layout.Screen>

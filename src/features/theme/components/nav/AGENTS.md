@@ -287,7 +287,7 @@ export const NavContainer = ({ children, className, ...props }: Props) => (
 )
 ```
 
-- Base class `.container`: `display: flex; flex-direction: column; height: 100dvh`
+- Base class `.container`: column flex that fills the rail host (`flex: 1`, `min-height: 0`, `height: 100%`) — pairs with [`Layout.Screen`](/src/core/layouts/layout.module.css) so scroll stays on `main`, not `100dvh` on the nav column alone.
 - Does not consume `useNav()` — purely presentational
 - Uses `HTMLAttributes<HTMLDivElement>` (not `ComponentProps`) since it wraps a native element
 
@@ -298,11 +298,19 @@ export const NavContainer = ({ children, className, ...props }: Props) => (
 Base classes applied by sub-components. Pages can extend via their own CSS module.
 
 ```css
-.nav {
+.base {
   --m3e-nav-bar-container-color: var(--md-sys-color-surface-container);
   --m3e-nav-rail-bottom-space: 0rem;
   --m3e-nav-rail-top-space: 0rem;
   background-color: var(--m3e-nav-bar-container-color);
+}
+
+.rail {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
 }
 
 .group {
@@ -317,7 +325,9 @@ Base classes applied by sub-components. Pages can extend via their own CSS modul
 .container {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
 }
 ```
 
